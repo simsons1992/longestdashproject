@@ -1,0 +1,192 @@
+:root {
+    --ink: #1f2430;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+    --surface: #ffffff;
+    --surface-muted: #fafafa;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* Wraps the widgets grid wherever it's placed on the page (own section
+   above the topbar, a sidebar, etc.) — kept off `body` on purpose, since
+   style.css already owns body's background/padding on the landing page. */
+.widgets-section {
+    max-width: 80%;
+    margin: 24px auto 0;
+}
+
+.widgets-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+/* ---------- Shared widget card ---------- */
+.widget {
+    width: 240px;
+    height: 240px;
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.widget-header h2 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.widget-hint {
+    margin: 0;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.4;
+    flex: 1;
+}
+
+.widget input[type="text"],
+.widget input[type="number"] {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 13px;
+    color: var(--ink);
+    outline: none;
+    font-family: inherit;
+    background-color: var(--surface);
+}
+
+.widget input:focus {
+    border-color: #a9adf5;
+}
+
+.widget-btn {
+    border: none;
+    border-radius: 8px;
+    background-color: rgb(49, 49, 49);
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 8px 14px;
+    cursor: pointer;
+    font-family: inherit;
+    margin-top: auto;
+}
+
+.widget-btn:hover {
+    background-color: #111111;
+}
+
+/* remove number input spinner arrows */
+.widget input[type="number"]::-webkit-outer-spin-button,
+.widget input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.widget input[type="number"] {
+    appearance: textfield;
+}
+
+/* ---------- Email widget ---------- */
+.email-widget {
+    justify-content: flex-start;
+}
+
+/* ---------- Tire widget ---------- */
+.tire-inputs {
+    display: flex;
+    gap: 8px;
+}
+
+.tire-inputs input {
+    flex: 1;
+    min-width: 0;
+}
+
+.tire-totals {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.tire-totals h4 {
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted);
+}
+
+.tire-totals h4 span:last-child {
+    color: var(--ink);
+    font-weight: 600;
+    font-size: 13px;
+}
+
+/* ---------- Template widget ---------- */
+.template-widget {
+    gap: 8px;
+}
+
+.template-results {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.template-result {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    border: none;
+    background-color: var(--surface-muted);
+    border-radius: 8px;
+    padding: 7px 10px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ink);
+    cursor: pointer;
+    text-align: left;
+    font-family: inherit;
+}
+
+.template-result strong {
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.template-result span {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--muted);
+    flex-shrink: 0;
+}
+
+.template-result.is-selected {
+    background-color: #eef2ff;
+    box-shadow: inset 0 0 0 1.5px #a9adf5;
+}
+
+.no-template-results {
+    margin: 0;
+    font-size: 12px;
+    color: var(--muted);
+    padding: 8px 4px;
+}

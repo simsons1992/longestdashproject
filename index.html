@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Longest Dashboard Project Ever</title>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="cardstyle.css">
+  <link rel="stylesheet" href="widgets.css">
+</head>
+
+<body>
+
+  <!-- WIDGETS: own section, sits above the orders topbar rather than inside it -->
+  <div class="widgets-section">
+    <div class="widgets-grid">
+
+      <div class="widget email-widget">
+        <div class="widget-header">
+          <h2>
+            <span class="material-symbols-rounded">
+              label_important
+            </span>
+          </h2>
+        </div>
+        <p class="widget-hint">Opens a new email in your default mail app, with a subject and body already filled in.
+        </p>
+        <button type="button" class="widget-btn" id="compose-email-btn">New email</button>
+      </div>
+
+      <div class="widget tire-widget">
+        <div class="widget-header">
+          <h2><span class="material-symbols-rounded">
+              sell
+            </span></h2>
+        </div>
+        <div class="tire-inputs">
+          <input type="number" id="tire-front" placeholder="Front size">
+          <input type="number" id="tire-rear" placeholder="Rear size">
+        </div>
+        <div class="tire-totals">
+          <h4><span>Total</span><span id="tire-total">&mdash;</span></h4>
+          <h4><span>Total dep</span><span id="tire-total-dep">&mdash;</span></h4>
+        </div>
+        <button type="button" class="widget-btn" id="tire-copy-btn">Copy</button>
+      </div>
+
+      <div class="widget template-widget">
+        <div class="widget-header">
+          <h2><span class="material-symbols-rounded">
+              bookmark_check
+            </span></h2>
+        </div>
+        <input type="text" id="template-search" placeholder="Search template...">
+        <div class="template-results" id="template-results"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <header class="topbar">
+    <div class="topbar-left">
+      <h1>Orders</h1>
+      <input type="search" id="order-search" placeholder="Search title, phone or email">
+    </div>
+    <div class="topbar-right">
+      <div id="status-filter" class="status-filter"></div>
+      <button type="button" id="new-order-btn" class="new-order-btn">
+        + New order <span class="kbd">Ctrl 1</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- PROPERTIES TITLE -->
+  <div class="properties">
+    <label>Status</label>
+    <label>Title</label>
+    <label>Notes</label>
+    <label>Phone</label>
+    <label>Email</label>
+    <label>PR</label>
+    <label>PU</label>
+    <label>Revenue</label>
+    <label>Delivery</label>
+  </div>
+
+  <!-- Order rows are rendered here by ui-list.js -->
+  <div id="orders-list"></div>
+
+  <p id="orders-empty" class="orders-empty" hidden>
+    No orders yet. Press <kbd>Ctrl</kbd>+<kbd>1</kbd> or click "New order" to create one.
+  </p>
+
+  <!-- OVERLAY ORDER CARD (toggled by ui-card.js) -->
+  <div id="overlay" class="overlay hidden">
+    <div class="ordercard">
+      <button type="button" class="card-close" id="card-close" aria-label="Close">&times;</button>
+
+      <input type="text" class="title" id="card-title" placeholder="TITLE">
+      <button type="button" class="status-pill" id="card-status"></button>
+
+      <div class="note-wrap">
+        <input type="text" class="note" id="card-note" placeholder="note...">
+      </div>
+      <input type="text" class="phone" id="card-phone" placeholder="phone...">
+      <input type="email" class="email" id="card-email" placeholder="email...">
+      <input type="text" class="Delivery" id="card-delivery" placeholder="dd.mm" inputmode="numeric" maxlength="5">
+
+      <div class="divider"></div>
+
+      <div class="bottom-row">
+        <input type="number" class="PR" id="card-pr" placeholder="pr...">
+        <input type="number" class="PU" id="card-pu" placeholder="pu..." disabled>
+      </div>
+
+      <div class="revenue-wrap">
+        <span class="currency">&euro;</span>
+        <input type="number" class="revenue" id="card-revenue" placeholder="0">
+      </div>
+
+      <div class="card-actions">
+        <button type="button" class="delete-btn" id="card-delete">Delete order</button>
+        <button type="button" class="save-btn" id="card-save">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="app.js"></script>
+  <script type="module" src="widgets.js"></script>
+</body>
+
+</html>

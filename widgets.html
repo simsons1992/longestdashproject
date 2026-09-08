@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="widgets.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+    <title>Widgets</title>
+  </head>
+
+  <body>
+    <div class="widgets-grid">
+      <div class="widget email-widget">
+        <div class="widget-header">
+          <h2>Mail</h2>
+        </div>
+        <p class="widget-hint">
+          Opens a new email in your default mail app, with a subject and body
+          already filled in.
+        </p>
+        <button type="button" class="widget-btn" id="compose-email-btn">
+          <span class="material-symbols-rounded">
+            label_important
+          </span>
+        </button>
+      </div>
+
+      <div class="widget tire-widget">
+        <div class="widget-header">
+          <h2>Tires</h2>
+        </div>
+        <div class="tire-inputs">
+          <input type="number" id="tire-front" placeholder="Front size" />
+          <input type="number" id="tire-rear" placeholder="Rear size" />
+        </div>
+        <div class="tire-totals">
+          <h4><span>Total</span><span id="tire-total">&mdash;</span></h4>
+          <h4>
+            <span>Total dep</span><span id="tire-total-dep">&mdash;</span>
+          </h4>
+        </div>
+        <button type="button" class="widget-btn" id="tire-copy-btn">
+          Copy
+        </button>
+      </div>
+
+      <div class="widget template-widget">
+        <div class="widget-header">
+          <h2>Templates</h2>
+        </div>
+        <input
+          type="text"
+          id="template-search"
+          placeholder="Search template..."
+        />
+        <div class="template-results" id="template-results"></div>
+      </div>
+    </div>
+
+    <script type="module" src="widgets.js"></script>
+  </body>
+</html>

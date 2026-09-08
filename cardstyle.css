@@ -1,0 +1,280 @@
+* {
+    box-sizing: border-box;
+}
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(20, 20, 43, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+}
+
+.overlay.hidden {
+    display: none;
+}
+
+.ordercard {
+    position: relative;
+    width: 400px;
+    background-color: #ffffff;
+    border-radius: 18px;
+    padding: 24px 22px 22px;
+    box-shadow: 0 20px 60px rgba(20, 20, 43, 0.2);
+    display: flex;
+    flex-direction: column;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.card-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    border: none;
+    background: transparent;
+    font-size: 20px;
+    line-height: 1;
+    color: #c3c5cc;
+    cursor: pointer;
+    padding: 4px;
+}
+
+.card-close:hover {
+    color: #333;
+}
+
+/* TITLE */
+.ordercard .title {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: 0.5px;
+    color: #1b1a55;
+    padding: 0;
+    padding-right: 26px;
+    margin-bottom: 14px;
+    width: 100%;
+}
+
+.ordercard .title::placeholder {
+    color: #1b1a55;
+    opacity: 0.4;
+}
+
+.ordercard .title.field-error {
+    animation: shake 0.4s;
+}
+
+.ordercard .title.field-error::placeholder {
+    color: #dc2626;
+    opacity: 1;
+}
+
+@keyframes shake {
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+}
+
+/* STATUS pill inside the card reuses .status-pill from style.css */
+.ordercard .status-pill {
+    align-self: flex-start;
+    height: 30px;
+    margin-bottom: 16px;
+}
+
+/* Text inputs: note / phone / email / delivery */
+.ordercard .note,
+.ordercard .phone,
+.ordercard .email,
+.ordercard .Delivery {
+    width: 100%;
+    border: 1px solid #e3e5ea;
+    border-radius: 10px;
+    padding: 11px 14px;
+    font-size: 13px;
+    color: #333;
+    margin-bottom: 10px;
+    outline: none;
+    font-family: inherit;
+}
+
+/* Note truncates with an ellipsis; the custom tooltip below (driven by
+   note-wrap's data-tooltip attribute) shows the full text on hover. */
+.ordercard .note {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 0;
+}
+
+/* Custom tooltip for the note field. Wraps the input so ::after has
+   somewhere to render — pseudo-elements don't attach to <input> itself.
+   Position follows the cursor via --tooltip-x/--tooltip-y, which
+   js/ui-card.js updates on mousemove. */
+.note-wrap {
+    position: relative;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.note-wrap[data-tooltip]:not([data-tooltip=""]):hover::after {
+    content: attr(data-tooltip);
+    position: fixed;
+    top: var(--tooltip-y, 0px);
+    left: var(--tooltip-x, 0px);
+    transform: translate(14px, 18px);
+    max-width: 260px;
+    background-color: #222222;
+    color: #ffffff;
+    font-size: 12px;
+    line-height: 1.4;
+    padding: 8px 10px;
+    border-radius: 8px;
+    white-space: normal;
+    word-wrap: break-word;
+    box-shadow: 0 10px 24px rgba(20, 20, 43, 0.25);
+    z-index: 300;
+    pointer-events: none;
+}
+
+.ordercard .note::placeholder,
+.ordercard .phone::placeholder,
+.ordercard .email::placeholder {
+    color: #c3c5cc;
+}
+
+.ordercard .note:focus,
+.ordercard .phone:focus,
+.ordercard .email:focus,
+.ordercard .Delivery:focus,
+.ordercard .PR:focus {
+    border-color: #a9adf5;
+}
+
+/* Dashed divider */
+.divider {
+    height: 2px;
+    margin: 4px 0 14px;
+    background-image: linear-gradient(to right, #d8dae0 50%, transparent 0%);
+    background-position: center;
+    background-size: 10px 2px;
+    background-repeat: repeat-x;
+}
+
+/* Bottom row: PR + PU */
+.bottom-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.ordercard .PR,
+.ordercard .PU {
+    flex: 1;
+    min-width: 0;
+    border: 1px solid #e3e5ea;
+    border-radius: 10px;
+    padding: 11px 12px;
+    font-size: 13px;
+    color: #333;
+    outline: none;
+}
+
+/* PU is computed (PR - 1) and disabled, so it reads as a quiet, non-editable field */
+.ordercard .PU {
+    background-color: #f7f7f8;
+    color: #8b8d94;
+    cursor: not-allowed;
+}
+
+.ordercard .PR::placeholder,
+.ordercard .PU::placeholder {
+    color: #c3c5cc;
+}
+
+/* Big revenue display, styled like an oversized title so the price reads first */
+.revenue-wrap {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    padding-top: 4px;
+    border-top: 1px solid #f0f0f2;
+}
+
+.revenue-wrap .currency {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: #1b1a55;
+}
+
+.ordercard .revenue {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: 700;
+    font-size: 36px;
+    color: #1b1a55;
+    padding: 6px 0;
+    width: 100%;
+}
+
+.ordercard .revenue::placeholder {
+    color: #d8dae0;
+}
+
+/* Actions */
+.card-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 18px;
+}
+
+.delete-btn {
+    border: none;
+    background: transparent;
+    color: #dc2626;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 6px 4px;
+    font-family: inherit;
+}
+
+.delete-btn:hover {
+    text-decoration: underline;
+}
+
+.save-btn {
+    border: none;
+    background-color: rgb(49, 49, 49);
+    color: #ffffff;
+    border-radius: 8px;
+    padding: 9px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.save-btn:hover {
+    background-color: #111111;
+}
+
+/* hide number input spinners */
+.ordercard input[type="number"]::-webkit-outer-spin-button,
+.ordercard input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.ordercard input[type="number"] {
+    appearance: textfield;
+}
