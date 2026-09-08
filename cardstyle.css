@@ -22,7 +22,7 @@
     background-color: #ffffff;
     border-radius: 18px;
     padding: 24px 22px 22px;
-    box-shadow: 0 20px 60px rgba(20, 20, 43, 0.2);
+    /* box-shadow: 0 20px 60px rgba(20, 20, 43, 0.2); */
     display: flex;
     flex-direction: column;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -277,4 +277,167 @@
 
 .ordercard input[type="number"] {
     appearance: textfield;
+}
+
+/* for the note section */
+
+/* --- Expanding note panel --- */
+
+.ordercard-shell {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+}
+
+.ordercard {
+    transition: border-radius 0.28s ease;
+    z-index: 1; /* keep left card's shadow above the note panel's edge */
+}
+
+.ordercard-shell.expanded .ordercard {
+    border-radius: 18px 0 0 18px;
+}
+
+.ordercard-note {
+    width: 0;
+    overflow: hidden;
+    background-color: #ffffff;
+    border-radius: 0 18px 18px 0;
+    box-shadow: 0 20px 60px rgba(20, 20, 43, 0.2);
+    transition: width 0.28s ease;
+}
+
+.ordercard-shell.expanded .ordercard-note {
+    width: 300px;
+}
+
+/* Inner wrap has a fixed width so content doesn't reflow/wrap-squeeze
+   while the panel's width is animating — it just gets revealed. */
+.ordercard-note-inner {
+    width: 300px;
+    height: 100%;
+    padding: 24px 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.ordercard-note-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    color: #8b8d94;
+    margin-bottom: 10px;
+}
+
+.ordercard-note-textarea {
+    flex: 1;
+    resize: none;
+    border: 1px solid #e3e5ea;
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 13px;
+    line-height: 1.5;
+    font-family: inherit;
+    color: #333;
+    outline: none;
+}
+
+.ordercard-note-textarea:focus {
+    border-color: #a9adf5;
+}
+
+.ordercard-note-textarea::placeholder {
+    color: #c3c5cc;
+}
+
+/* --- Quick-capture notes panel --- */
+
+.ordercard-note-inner {
+    width: 300px;
+    height: 100%;
+    padding: 24px 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.ordercard-note-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    color: #8b8d94;
+    margin-bottom: 10px;
+    flex: 0 0 auto;
+}
+
+.new-note-textarea {
+    flex: 0 0 auto;
+    width: 100%;
+    resize: none;
+    border: 1px solid #e3e5ea;
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 13px;
+    line-height: 1.5;
+    font-family: inherit;
+    color: #333;
+    outline: none;
+    margin-bottom: 14px;
+}
+
+.new-note-textarea:focus {
+    border-color: #a9adf5;
+}
+
+.new-note-textarea::placeholder {
+    color: #c3c5cc;
+}
+
+/* Scrollable log of saved notes, newest first */
+.note-list {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.note-item {
+    width: 80%;
+    align-self: flex-start;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #f0f0f2;
+}
+
+.note-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.note-item-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #a3a5ad;
+    margin-bottom: 4px;
+}
+
+.note-item-text {
+    font-size: 13px;
+    line-height: 1.5;
+    color: #333;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.note-list-empty {
+    font-size: 12px;
+    color: #c3c5cc;
+    margin: 0;
+}
+
+.note-list-empty.hidden {
+    display: none;
 }

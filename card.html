@@ -9,20 +9,67 @@
 </head>
 
 <body>
-    <div class="ordercard">
-        <input type="text" class="title" placeholder="TITLE">
-        <button class="status">Status</button>
-        <input type="text" class="note" placeholder="note...">
-        <input type="text" class="phone" placeholder="phone...">
-        <input type="email" class="email" placeholder="email...">
+    <div class="overlay" id="overlay">
+        <div class="ordercard-shell" id="card-shell">
+            <div class="ordercard">
+                <button class="card-close" id="card-close">&times;</button>
 
-        <div class="divider"></div>
+                <input type="text" id="card-title" class="title" placeholder="TITLE">
+                <button type="button" id="card-status" class="status-pill">Status</button>
 
-        <div class="bottom-row">
-            <input type="number" class="PR" placeholder="pr...">
-            <input type="number" class="revenue" placeholder="Revenue...">
+                <div class="note-wrap">
+                    <input type="text" id="card-note" class="note" placeholder="note...">
+                </div>
+
+                <input type="text" id="card-phone" class="phone" placeholder="phone...">
+                <input type="email" id="card-email" class="email" placeholder="email...">
+                <input type="text" id="card-delivery" class="Delivery" placeholder="dd.mm">
+
+                <div class="divider"></div>
+
+                <div class="bottom-row">
+                    <input type="number" id="card-pr" class="PR" placeholder="pr...">
+                    <input type="number" id="card-pu" class="PU" placeholder="pu..." disabled>
+                </div>
+
+                <div class="revenue-wrap">
+                    <span class="currency">€</span>
+                    <input type="number" id="card-revenue" class="revenue" placeholder="0">
+                </div>
+
+                <div class="card-actions">
+                    <button type="button" id="card-delete" class="delete-btn" hidden>Delete</button>
+                    <button type="button" id="card-save" class="save-btn">Save</button>
+                </div>
+            </div>
+
+            <div class="ordercard-note" id="ordercard-note">
+                <div class="ordercard-note-inner">
+                    <label class="ordercard-note-label">Notes</label>
+                    <textarea class="ordercard-note-textarea" id="card-note-expanded"
+                        placeholder="Alt+← to close"></textarea>
+                </div>
+            </div>
         </div>
     </div>
+
+    <script>
+        // prototype-only wiring, just to preview the expand/collapse animation
+        // in isolation. Delete this block once you're driving the card from
+        // the real ui-card.js.
+        const shell = document.getElementById("card-shell");
+        document.addEventListener("keydown", (e) => {
+            if (e.altKey && e.key === "ArrowRight") {
+                e.preventDefault();
+                shell.classList.add("expanded");
+                document.getElementById("card-note-expanded").focus();
+            }
+            if (e.altKey && e.key === "ArrowLeft") {
+                e.preventDefault();
+                shell.classList.remove("expanded");
+            }
+        });
+    </script>
 </body>
 
 </html>

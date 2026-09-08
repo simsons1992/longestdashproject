@@ -6,6 +6,7 @@ import { getStatus, DEFAULT_STATUS } from "./statuses.js";
 import { openStatusPicker, isPopoverOpen } from "./status-picker.js";
 
 const overlay = document.getElementById("overlay");
+const cardShell = document.getElementById("card-shell");
 const titleInput = document.getElementById("card-title");
 const statusBtn = document.getElementById("card-status");
 const noteInput = document.getElementById("card-note");
@@ -20,8 +21,14 @@ const deleteBtn = document.getElementById("card-delete");
 const saveBtn = document.getElementById("card-save");
 const closeBtn = document.getElementById("card-close");
 
+// Expanding notes panel (right side, quick-capture note log)
+const newNoteInput = document.getElementById("card-note-new");
+const noteListEl = document.getElementById("note-list");
+const noteListEmptyEl = document.getElementById("note-list-empty");
+
 // Up/Down cycles through these, in the order they appear on the card.
-// PU is skipped since it's derived from PR and disabled.
+// PU is skipped since it's derived from PR and disabled. The notes-panel
+// textarea is intentionally excluded — its Enter key does something else.
 const NAV_ORDER = [
   titleInput,
   statusBtn,
@@ -35,8 +42,10 @@ const NAV_ORDER = [
 
 let currentOrder = null; // null while creating a new order
 let currentStatusId = DEFAULT_STATUS;
+let currentNotes = []; // { id, text, createdAt } — newest first
 let onSavedCallback = () => { };
 let statusJustChanged = false; // true once a status is picked by mouse, until form resets/refills
+let elementFocusedBeforeExpand = null; // so Alt+Left can restore focus sensibly
 
 // --- Delivery date: typed as "dd.mm" (day first, month second), stored as
 // a full ISO date string internally with the current year assumed. ---
@@ -92,6 +101,90 @@ function refreshNoteTooltip() {
   noteWrap.dataset.tooltip = noteInput.value;
 }
 
+// --- Expanding notes panel: open/close + quick-capture note log. ---
+
+function setExpanded(expanded) {
+  cardShell.classList.toggle("expanded", expanded);
+}
+
+function isExpanded() {
+  return cardShell.classList.contains("expanded");
+}
+
+// "2026-09-08T14:32:00.000Z" -> { date: "08.09", time: "14:32" }, in the
+// dd.mm convention already used for delivery, plus 24h local time.
+function formatNoteTimestamp(iso) {
+  const d = new Date(iso);
+  const dd = String(d.getDate()).padStart(2, "0");
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const hh = String(d.getHours()).padStart(2, "0");
+  const min = String(d.getMinutes()).padStart(2, "0");
+  return { date: `${dd}.${mm}`, time: `${hh}:${min}` };
+}
+
+// Rebuilds the note list DOM from currentNotes. No innerHTML/markup strings,
+// per project convention — built with createElement throughout.
+function renderNotes() {
+  noteListEl.textContent = "";
+
+  noteListEmptyEl.classList.toggle("hidden", currentNotes.length > 0);
+
+  for (const note of currentNotes) {
+    const { date, time } = formatNoteTimestamp(note.createdAt);
+
+    const item = document.createElement("div");
+    item.className = "note-item";
+
+    const meta = document.createElement("div");
+    meta.className = "note-item-meta";
+
+    const dateEl = document.createElement("span");
+    dateEl.className = "note-item-date";
+    dateEl.textContent = date;
+
+    const timeEl = document.createElement("span");
+    timeEl.className = "note-item-time";
+    timeEl.textContent = time;
+
+    meta.append(dateEl, timeEl);
+
+    const textEl = document.createElement("div");
+    textEl.className = "note-item-text";
+    textEl.textContent = note.text;
+
+    item.append(meta, textEl);
+    noteListEl.appendChild(item);
+  }
+}
+
+// Saves the text currently typed in the quick-capture field as a new note:
+// prepends it (newest first) to currentNotes, re-renders, clears the input,
+// and keeps focus there so multiple notes can be typed back-to-back.
+// Persists immediately for existing orders; for a brand-new, not-yet-saved
+// order there's no document to patch yet, so the note just rides along in
+// currentNotes until the order is created via the normal Save flow (see
+// collectFormData).
+async function addNote() {
+  const text = newNoteInput.value.trim();
+  if (!text) return;
+
+  const note = {
+    id: crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36),
+    text,
+    createdAt: new Date().toISOString(),
+  };
+
+  currentNotes = [note, ...currentNotes];
+  renderNotes();
+  newNoteInput.value = "";
+
+  if (currentOrder) {
+    await updateOrder(currentOrder.id, { notes: currentNotes });
+  }
+
+  newNoteInput.focus();
+}
+
 function resetForm() {
   currentOrder = null;
   titleInput.value = "";
@@ -101,9 +194,13 @@ function resetForm() {
   prInput.value = "";
   deliveryInput.value = "";
   revenueInput.value = "";
+  currentNotes = [];
+  newNoteInput.value = "";
+  renderNotes();
   setStatusPill(DEFAULT_STATUS);
   refreshPU();
   refreshNoteTooltip();
+  setExpanded(false);
   statusJustChanged = false;
   deleteBtn.hidden = true;
 }
@@ -117,9 +214,13 @@ function fillForm(order) {
   prInput.value = order.pr ?? "";
   deliveryInput.value = formatDeliveryForInput(order.delivery);
   revenueInput.value = order.revenue ?? "";
+  currentNotes = Array.isArray(order.notes) ? [...order.notes] : [];
+  newNoteInput.value = "";
+  renderNotes();
   setStatusPill(order.status || DEFAULT_STATUS);
   refreshPU();
   refreshNoteTooltip();
+  setExpanded(false);
   statusJustChanged = false;
   deleteBtn.hidden = false;
 }
@@ -136,6 +237,7 @@ function openCard(order) {
 
 function closeCard() {
   overlay.classList.add("hidden");
+  setExpanded(false);
 }
 
 // Moves focus to the previous/next field in NAV_ORDER (clamped, no wraparound).
@@ -167,6 +269,7 @@ function collectFormData() {
     pr: prInput.value === "" ? null : Number(prInput.value),
     delivery: parseDeliveryInput(deliveryInput.value),
     revenue: revenueInput.value === "" ? null : Number(revenueInput.value),
+    notes: currentNotes,
   };
 }
 
@@ -235,6 +338,16 @@ async function handleStatusSelected(statusId, meta = {}) {
   }
 }
 
+// Opens (if needed) and focuses the quick-capture note field. Shared by
+// Alt+Right (open the panel) and Alt+N (jump straight to note-taking).
+function focusNewNote() {
+  if (!isExpanded()) {
+    elementFocusedBeforeExpand = document.activeElement;
+    setExpanded(true);
+  }
+  newNoteInput.focus();
+}
+
 function initCard(onSaved) {
   onSavedCallback = onSaved;
 
@@ -264,6 +377,46 @@ function initCard(onSaved) {
     // While the status popover is open, it owns Up/Down/Enter/Escape entirely
     // (it also calls stopPropagation, this is just a safety net).
     if (isPopoverOpen()) return;
+
+    // Alt+N: jump straight into quick note-taking from anywhere in the card,
+    // opening the panel first if it's closed.
+    if (event.altKey && event.key.toLowerCase() === "n") {
+      event.preventDefault();
+      focusNewNote();
+      return;
+    }
+
+    // Alt+Right / Alt+Left open/close the notes panel. Checked unconditionally
+    // (regardless of focus) since Alt+Arrow isn't used for in-field text
+    // navigation on Windows/Linux. On macOS this does collide with
+    // Option+Arrow's word-jump inside text fields — worth knowing if it ever
+    // feels off while typing.
+    if (event.altKey && event.key === "ArrowRight") {
+      event.preventDefault();
+      if (!isExpanded()) focusNewNote();
+      return;
+    }
+
+    if (event.altKey && event.key === "ArrowLeft") {
+      event.preventDefault();
+      if (isExpanded()) {
+        setExpanded(false);
+        (elementFocusedBeforeExpand || titleInput).focus();
+      }
+      return;
+    }
+
+    // While typing in the quick-capture note field, it owns its own keys:
+    // Enter saves the note (Shift+Enter still inserts a newline normally),
+    // and Up/Down/Left/Right are left alone for normal cursor movement
+    // instead of triggering field-to-field navigation.
+    if (document.activeElement === newNoteInput) {
+      if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        await addNote();
+      }
+      return;
+    }
 
     if (event.key === "Escape") {
       closeCard();

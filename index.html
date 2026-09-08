@@ -96,34 +96,51 @@
 
   <!-- OVERLAY ORDER CARD (toggled by ui-card.js) -->
   <div id="overlay" class="overlay hidden">
-    <div class="ordercard">
-      <button type="button" class="card-close" id="card-close" aria-label="Close">&times;</button>
+    <div class="ordercard-shell" id="card-shell">
+      <div class="ordercard">
+        <button type="button" class="card-close" id="card-close" aria-label="Close">&times;</button>
 
-      <input type="text" class="title" id="card-title" placeholder="TITLE">
-      <button type="button" class="status-pill" id="card-status"></button>
+        <input type="text" class="title" id="card-title" placeholder="TITLE">
+        <button type="button" class="status-pill" id="card-status"></button>
 
-      <div class="note-wrap">
-        <input type="text" class="note" id="card-note" placeholder="note...">
+        <div class="note-wrap">
+          <input type="text" class="note" id="card-note" placeholder="note...">
+        </div>
+        <input type="text" class="phone" id="card-phone" placeholder="phone...">
+        <input type="email" class="email" id="card-email" placeholder="email...">
+        <input type="text" class="Delivery" id="card-delivery" placeholder="dd.mm" inputmode="numeric" maxlength="5">
+
+        <div class="divider"></div>
+
+        <div class="bottom-row">
+          <input type="number" class="PR" id="card-pr" placeholder="pr...">
+          <input type="number" class="PU" id="card-pu" placeholder="pu..." disabled>
+        </div>
+
+        <div class="revenue-wrap">
+          <span class="currency">&euro;</span>
+          <input type="number" class="revenue" id="card-revenue" placeholder="0">
+        </div>
+
+        <div class="card-actions">
+          <button type="button" class="delete-btn" id="card-delete">Delete order</button>
+          <button type="button" class="save-btn" id="card-save">Save</button>
+        </div>
       </div>
-      <input type="text" class="phone" id="card-phone" placeholder="phone...">
-      <input type="email" class="email" id="card-email" placeholder="email...">
-      <input type="text" class="Delivery" id="card-delivery" placeholder="dd.mm" inputmode="numeric" maxlength="5">
 
-      <div class="divider"></div>
+        <div class="ordercard-note" id="ordercard-note">
+          <div class="ordercard-note-inner">
+              <label class="ordercard-note-label">Notes</label>
 
-      <div class="bottom-row">
-        <input type="number" class="PR" id="card-pr" placeholder="pr...">
-        <input type="number" class="PU" id="card-pu" placeholder="pu..." disabled>
-      </div>
+              <textarea class="new-note-textarea" id="card-note-new"
+                  placeholder="Type a note, Enter to save... (Alt+N)" rows="3"></textarea>
 
-      <div class="revenue-wrap">
-        <span class="currency">&euro;</span>
-        <input type="number" class="revenue" id="card-revenue" placeholder="0">
-      </div>
+              <div class="note-list" id="note-list"></div>
+              <p class="note-list-empty" id="note-list-empty">No notes yet.</p>
+          </div>
+        </div>
 
-      <div class="card-actions">
-        <button type="button" class="delete-btn" id="card-delete">Delete order</button>
-        <button type="button" class="save-btn" id="card-save">Save</button>
+      
       </div>
     </div>
   </div>
