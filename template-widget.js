@@ -1,5 +1,7 @@
-// Search-and-copy template list. Up to 3 matches shown at once; Up/Down
-// moves the highlighted match, Enter (or a click) copies it.
+// Search-and-copy template list.
+// Up to 3 matches shown at once.
+// Up/Down moves the highlighted match.
+// Enter (or a click) copies it.
 
 import { TEMPLATES } from "./templates-data.js";
 
@@ -11,17 +13,25 @@ let selectedIndex = 0;
 
 function el(tag, className) {
   const node = document.createElement(tag);
-  if (className) node.className = className;
+
+  if (className) {
+    node.className = className;
+  }
+
   return node;
 }
 
 function renderTemplates() {
   const query = searchInput.value.trim().toLowerCase();
+
   visibleTemplates = TEMPLATES.filter((template) =>
     template.title.toLowerCase().includes(query)
   ).slice(0, 3);
 
-  selectedIndex = Math.min(selectedIndex, Math.max(visibleTemplates.length - 1, 0));
+  selectedIndex = Math.min(
+    selectedIndex,
+    Math.max(visibleTemplates.length - 1, 0)
+  );
 
   resultsEl.textContent = "";
 
@@ -34,8 +44,13 @@ function renderTemplates() {
 
   visibleTemplates.forEach((template, index) => {
     const button = el("button", "template-result");
+
     button.type = "button";
-    if (index === selectedIndex) button.classList.add("is-selected");
+
+    if (index === selectedIndex) {
+      button.classList.add("is-selected");
+    }
+
     button.dataset.templateIndex = String(index);
 
     const title = document.createElement("strong");
@@ -51,25 +66,67 @@ function renderTemplates() {
 
 async function copyTemplate(index) {
   const template = visibleTemplates[index];
-  if (!template) return;
 
-  const copyLabel = resultsEl.querySelector(`[data-template-index="${index}"] span`);
+  if (!template) {
+    return;
+  }
+
+  const copyLabel = resultsEl.querySelector(
+    `[data-template-index="${index}"] span`
+  );
 
   try {
-    await navigator.clipboard.writeText(template.text);
+    if (template.image) {
+      // Create HTML containing the image and text.
+      const html = `
+        <div>
+          <img
+            src="${template.image}"
+            style="max-height: 180px; display: block; margin-bottom: 10px;"
+          >
+          <div>
+            ${template.text.replace(/\n/g, "<br>")}
+          </div>
+        </div>
+      `;
+
+      const clipboardItem = new ClipboardItem({
+        "text/plain": new Blob([template.text], {
+          type: "text/plain",
+        }),
+
+        "text/html": new Blob([html], {
+          type: "text/html",
+        }),
+      });
+
+      await navigator.clipboard.write([clipboardItem]);
+    } else {
+      // Normal text-only template.
+      await navigator.clipboard.writeText(template.text);
+    }
+
     if (copyLabel) {
       copyLabel.textContent = "Copied";
+
       window.setTimeout(() => {
         copyLabel.textContent = "Copy";
       }, 1500);
     }
-  } catch {
-    window.prompt("Copy this template text:", template.text);
+  } catch (error) {
+    console.error("Clipboard error:", error);
+
+    window.prompt(
+      "Copy this template text:",
+      template.text
+    );
   }
 }
 
 function initTemplateWidget() {
-  if (!searchInput || !resultsEl) return;
+  if (!searchInput || !resultsEl) {
+    return;
+  }
 
   searchInput.addEventListener("input", () => {
     selectedIndex = 0;
@@ -80,23 +137,38 @@ function initTemplateWidget() {
     if (event.key === "ArrowDown" && visibleTemplates.length) {
       event.preventDefault();
       event.stopPropagation();
-      selectedIndex = (selectedIndex + 1) % visibleTemplates.length;
+
+      selectedIndex =
+        (selectedIndex + 1) % visibleTemplates.length;
+
       renderTemplates();
-    } else if (event.key === "ArrowUp" && visibleTemplates.length) {
+    } else if (
+      event.key === "ArrowUp" &&
+      visibleTemplates.length
+    ) {
       event.preventDefault();
       event.stopPropagation();
-      selectedIndex = (selectedIndex - 1 + visibleTemplates.length) % visibleTemplates.length;
+
+      selectedIndex =
+        (selectedIndex - 1 + visibleTemplates.length) %
+        visibleTemplates.length;
+
       renderTemplates();
     } else if (event.key === "Enter") {
       event.preventDefault();
       event.stopPropagation();
+
       copyTemplate(selectedIndex);
     }
   });
 
   resultsEl.addEventListener("click", (event) => {
     const item = event.target.closest(".template-result");
-    if (!item) return;
+
+    if (!item) {
+      return;
+    }
+
     copyTemplate(Number(item.dataset.templateIndex));
   });
 
