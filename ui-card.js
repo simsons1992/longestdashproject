@@ -8,6 +8,8 @@ import { openStatusPicker, isPopoverOpen } from "./status-picker.js";
 const overlay = document.getElementById("overlay");
 const cardShell = document.getElementById("card-shell");
 const titleInput = document.getElementById("card-title");
+// near the other element refs, after statusBtn
+const noteCounterEl = document.getElementById("note-counter");
 const statusBtn = document.getElementById("card-status");
 const noteInput = document.getElementById("card-note");
 const noteWrap = noteInput.parentElement;
@@ -89,6 +91,34 @@ function setStatusPill(statusId) {
   statusBtn.style.setProperty("--pill-bg", status.bg);
 }
 
+
+// Syncs the note-counter pill next to the status button. Uses the
+// counter_0..counter_9 glyph ligatures from Material Symbols for 1-9 notes;
+// beyond that the icon font has no glyph, so it falls back to plain digits
+// via .note-counter-text (see CSS).
+function updateNoteCounter() {
+  const count = currentNotes.length;
+
+  if (count === 0) {
+    noteCounterEl.hidden = true;
+    return;
+  }
+
+  noteCounterEl.hidden = false;
+
+  if (count <= 9) {
+    noteCounterEl.classList.remove("note-counter-text");
+    noteCounterEl.textContent = `counter_${count}`;
+  } else {
+    noteCounterEl.classList.add("note-counter-text");
+    noteCounterEl.textContent = String(count);
+  }
+}
+
+
+
+
+
 // PU is always PR - 1. It is never independently editable.
 function refreshPU() {
   const pr = prInput.value === "" ? null : Number(prInput.value);
@@ -129,6 +159,8 @@ function renderNotes() {
 
   noteListEmptyEl.classList.toggle("hidden", currentNotes.length > 0);
 
+  updateNoteCounter(); // <-- new
+
   for (const note of currentNotes) {
     const { date, time } = formatNoteTimestamp(note.createdAt);
 
@@ -152,7 +184,7 @@ function renderNotes() {
     textEl.className = "note-item-text";
     textEl.textContent = note.text;
 
-    item.append(meta, textEl);
+    item.append(textEl, meta);
     noteListEl.appendChild(item);
   }
 }

@@ -80,10 +80,16 @@
     75% { transform: translateX(4px); }
 }
 
-/* STATUS pill inside the card reuses .status-pill from style.css */
+/* was margin-bottom: 16px; on .ordercard .status-pill — moved to the row */
 .ordercard .status-pill {
     align-self: flex-start;
     height: 30px;
+}
+
+.card-status-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     margin-bottom: 16px;
 }
 
@@ -421,7 +427,7 @@
     justify-content: space-between;
     font-size: 11px;
     color: #a3a5ad;
-    margin-bottom: 4px;
+    margin-top: 12px;
 }
 
 .note-item-text {
@@ -440,4 +446,35 @@
 
 .note-list-empty.hidden {
     display: none;
+}
+
+/* Note counter: sits right of the status pill, hidden until there's ≥1 note.
+   Uses the counter_1..counter_9 ligatures from Material Symbols; beyond 9
+   the icon font has no glyph, so 10+ falls back to a plain numeral badge. */
+.note-counter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    line-height: 1;
+    color: skyblue;
+    font-variation-settings: 'FILL' 1;
+    user-select: none;
+}
+
+.note-counter[hidden] {
+    display: none;
+}
+
+.note-counter.note-counter-text {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-variation-settings: unset;
+    font-size: 11px;
+    font-weight: 700;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 4px;
+    border-radius: 9px;
+    background-color: #f0f0f2;
+    color: #6b6d76;
 }

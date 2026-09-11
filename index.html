@@ -101,7 +101,10 @@
         <button type="button" class="card-close" id="card-close" aria-label="Close">&times;</button>
 
         <input type="text" class="title" id="card-title" placeholder="TITLE">
-        <button type="button" class="status-pill" id="card-status"></button>
+            <div class="card-status-row">
+                <button type="button" class="status-pill" id="card-status"></button>
+                <span class="material-symbols-rounded note-counter" id="note-counter" hidden></span>
+            </div>
 
         <div class="note-wrap">
           <input type="text" class="note" id="card-note" placeholder="note...">
