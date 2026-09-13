@@ -1,19 +1,25 @@
 :root {
-    --ink: #1f2430;
+    /*     --ink: #1f2430;
     --muted: #6b7280;
     --border: #e3e5ea;
-    --surface: #ffffff;
+    --surface: #ffffff; */
+    --main-background: #f7f7f8;
+    --white: #FAFAFA;
+    --black: #222222;
+    --negative: #22222240;
+    --brand-color: greenyellow;
+    --muted: #222222a0;
 }
 
 body {
     margin: 0;
     padding: 0 0 60px;
     min-height: 100vh;
-    background-color: #FEFFFC;
+    background-color: var(--main-background);
     background-image: radial-gradient(circle, #d3d3d3 1px, transparent 1px);
     background-size: 20px 20px;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    color: var(--ink);
+    color: var(--black);
 }
 
 /* ---------- Topbar ---------- */
@@ -40,18 +46,18 @@ body {
 }
 
 #order-search {
-    border: 1px solid var(--border);
+    border: 1px solid var(--negative);
     border-radius: 8px;
     padding: 8px 12px;
     font-size: 13px;
     outline: none;
     min-width: 220px;
-    background-color: var(--surface);
+    background-color: var(--white);
     font-family: inherit;
 }
 
 #order-search:focus {
-    border-color: #a9adf5;
+    border-color: var(--brand-color);
 }
 
 .topbar-right {
@@ -66,8 +72,8 @@ body {
 }
 
 .filter-chip {
-    border: 1px solid var(--border);
-    background-color: var(--surface);
+    border: 1px solid var(--negative);
+    background-color: var(--white);
     border-radius: 999px;
     padding: 6px 12px;
     font-size: 12px;
@@ -77,18 +83,18 @@ body {
 }
 
 .filter-chip.is-active {
-    background-color: rgb(49, 49, 49);
-    border-color: rgb(49, 49, 49);
-    color: #ffffff;
+    background-color: var(--black);
+    border-color: var(--negative);
+    color: var(--white);
 }
 
 .new-order-btn {
     display: flex;
     align-items: center;
     gap: 8px;
-    border: none;
-    background-color: rgb(49, 49, 49);
-    color: #ffffff;
+    border: 1px solid var(--negative);
+    background-color: var(--white);
+    color: var(--black);
     border-radius: 8px;
     padding: 9px 16px;
     font-size: 13px;
@@ -97,13 +103,14 @@ body {
 }
 
 .new-order-btn:hover {
-    background-color: #111111;
+    background-color: var(--black);
+    color: var(--white);
 }
 
 .new-order-btn .kbd {
     font-size: 11px;
     opacity: 0.6;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 1px solid var(--negative);
     border-radius: 4px;
     padding: 1px 5px;
 }
@@ -122,7 +129,7 @@ body {
 
 .properties label {
     /*     background-color: #fafafa; */
-    background-color: greenyellow;
+    background-color: var(--brand-color);
     color: #222222;
     font-weight: 500;
     border-radius: 8px;
@@ -152,7 +159,7 @@ body {
     display: flex;
     margin: 8px auto;
     gap: 8px;
-    background-color: var(--surface);
+    background-color: var(--main-background);
     border-radius: 12px;
     /*     height: 60px; */
     cursor: pointer;
@@ -161,7 +168,8 @@ body {
 }
 
 .orderbox:hover {
-    border-color: lightsteelblue;
+
+    border-color: var(--brand-color);
 }
 
 .orderbox>* {
@@ -170,9 +178,9 @@ body {
 }
 
 .orderbox.is-selected {
-
-    background-color: #e1e1e1;
-
+    background-color: var(--white);
+    border-color: var(--brand-color);
+    transform: translateY(-3px);
 }
 
 .orderbox .title,
@@ -187,7 +195,7 @@ body {
     align-items: center;
     padding: 0 12px;
     font-size: 14px;
-    color: #333;
+    color: var(--black);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
