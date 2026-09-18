@@ -9,6 +9,8 @@
     --negative: #22222240;
     --brand-color: greenyellow;
     --muted: #222222a0;
+    --selected: #2222220d;
+    --red: #d92121;
 }
 
 body {
@@ -130,7 +132,7 @@ body {
 .properties label {
     /*     background-color: #fafafa; */
     background-color: var(--brand-color);
-    color: #222222;
+    color: var(--black);
     font-weight: 500;
     border-radius: 8px;
     height: 28px;
@@ -218,8 +220,8 @@ body {
     width: 22px;
     height: 22px;
     border-radius: 50%;
-    border: 1px solid var(--border);
-    background-color: var(--surface);
+    border: 1px solid var(--negative);
+    background-color: var(--white);
     color: var(--muted);
     font-size: 14px;
     line-height: 1;
@@ -236,9 +238,8 @@ body {
 }
 
 .row-delete:hover {
-    background-color: #fee2e2;
-    color: #dc2626;
-    border-color: #fecaca;
+    background-color: var(--red);
+    color: var(--white)
 }
 
 .orders-empty {
@@ -318,7 +319,7 @@ body {
     padding: 7px 8px;
     font-size: 13px;
     font-weight: 500;
-    color: #333;
+    color: var(--black);
     cursor: pointer;
     text-align: left;
     font-family: inherit;
@@ -333,11 +334,11 @@ body {
 }
 
 .status-popover-option:hover {
-    background-color: #f2f2f2;
+    background-color: var(--selected);
 }
 
 .status-popover-option.is-active {
-    background-color: var(--pill-bg);
+    background-color: #2222220d;
     color: var(--pill-color);
 }
 
@@ -348,7 +349,7 @@ body {
 /* ---------- Search match highlight (Ctrl+P), styled like native find-in-page ---------- */
 .search-highlight {
     background-color: #ffb300;
-    color: #1f2430;
+    color: var(--black);
     border-radius: 2px;
     padding: 0 1px;
 }
@@ -365,8 +366,8 @@ body {
     left: var(--tooltip-x, 0px);
     transform: translate(14px, 18px);
     max-width: 260px;
-    background-color: #222222;
-    color: #ffffff;
+    background-color: var(--black);
+    color: var(--white);
     font-size: 12px;
     line-height: 1.4;
     padding: 8px 10px;
@@ -396,4 +397,7 @@ input[type="number"] {
         'wght' 400,
         'GRAD' 0,
         'opsz' 24
+}
+.material-symbols-rounded{
+    color: var(--brand-color);
 }

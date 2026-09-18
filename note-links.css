@@ -1,0 +1,47 @@
+/* note-links.css — @-mention links inside notes/reminders, plus the
+   placeholder order-preview card. The .order-preview-* rules are
+   temporary — delete them once the real order-card overlay is wired
+   in at integration time (see note-links.js). */
+
+.note-mention-link {
+    color: var(--brand-color);
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.note-mention-link:hover {
+    text-decoration: underline;
+}
+
+/* ---- Placeholder order preview (temporary) ---- */
+
+.order-preview-card {
+    position: relative;
+    width: 300px;
+    background-color: var(--white);
+    border-radius: 18px;
+    padding: 22px 20px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.order-preview-title {
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: 700;
+    font-size: 20px;
+    color: var(--black);
+    margin-bottom: 6px;
+    padding-right: 20px;
+}
+
+.order-preview-meta {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 16px;
+}
+
+.order-preview-note {
+    font-size: 11px;
+    font-style: italic;
+    color: var(--negative);
+    line-height: 1.4;
+}

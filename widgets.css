@@ -30,7 +30,8 @@
     height: 240px;
     background-color: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 14px;
+    border-radius: 20%;
+    corner-shape: squircle;
     padding: 16px;
     display: flex;
     flex-direction: column;

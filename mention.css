@@ -1,0 +1,51 @@
+/* mention.css — @-mention popup, used by mention.js */
+
+.mention-popup {
+    position: fixed;
+    z-index: 250;
+    min-width: 200px;
+    max-width: 280px;
+    max-height: 220px;
+    overflow-y: auto;
+    background-color: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 14px 34px rgba(20, 20, 43, 0.22);
+    padding: 6px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.mention-popup[hidden] {
+    display: none;
+}
+
+.mention-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.mention-item:hover,
+.mention-item.mention-item-active {
+    background-color: var(--selected);
+}
+
+.mention-item-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--black);
+}
+
+.mention-item-meta {
+    font-size: 11px;
+    color: var(--muted);
+}
+
+.mention-empty {
+    padding: 10px;
+    font-size: 12px;
+    font-style: italic;
+    color: var(--muted);
+}

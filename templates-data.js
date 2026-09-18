@@ -4,8 +4,11 @@ const TEMPLATES = [
   { title: "Priekšapmaksa", text: "Paldies, nosūtam priekšapmaksas rēķinu." },
   { title: "New order", text: "Nosūtam priekšapmaksas rēķinu par pasūtījumu:" },
   {
-    title: "GLE Coupe Floor",
+    title: "GLE 254 Coupe Floor",
     text: "Priekšējie: 145.39 EUR ar PVN (A16768063069G33)\nAizmugurējie: 86.84 EUR ar PVN (A16768069069G33)",
+  },
+    {title: "GLA 247 Floor",
+    text: "Priekšējie: 114.16 EUR ar PVN (A17768079029G33)\nAizmugurējie: 69.28 EUR ar PVN (A24768002039G33)\nKopā: 183.44 EUR ar PVN",
   },
   {
     title: "C206 WT r18 recodm.",

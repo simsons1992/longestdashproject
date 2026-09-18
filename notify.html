@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Notify — Reminder Sandbox</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+<link rel="stylesheet" href="notify.css">
+<link rel="stylesheet" href="mention.css">
+<link rel="stylesheet" href="note-links.css">
+</head>
+<body>
+
+<div class="notify-page">
+  <div class="notify-stage" id="notifyStage">
+
+    <button type="button" id="bellBtn" class="bell-btn" aria-label="Create reminder">
+      <span class="material-symbols-rounded">notification_add</span>
+    </button>
+
+    <div id="reminderStack" class="reminder-stack"></div>
+
+    <div id="moreLabel" class="more-label" hidden></div>
+
+    <div id="expandHandle" class="expand-handle" hidden aria-label="Expand reminders">
+      <div class="expand-handle-bar"></div>
+    </div>
+
+    <div id="expandedPanel" class="expanded-panel">
+      <div id="expandedList" class="expanded-list"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- New reminder overlay -->
+<div id="reminderOverlay" class="overlay hidden">
+  <div class="reminder-form-card">
+    <button type="button" class="card-close" id="closeReminderForm" aria-label="Close">&times;</button>
+
+    <div class="reminder-form-header">
+      <span class="material-symbols-rounded reminder-form-icon">notification_add</span>
+      <span class="reminder-form-title">New reminder</span>
+    </div>
+
+    <textarea id="reminderTextInput" class="reminder-text-input" placeholder="Reminder text" rows="2"></textarea>
+
+    <div class="reminder-form-row">
+      <input type="date" id="reminderDateInput" class="reminder-date-input">
+      <input type="time" id="reminderTimeInput" class="reminder-time-input">
+    </div>
+
+    <button type="button" id="createReminderBtn" class="reminder-create-btn">create</button>
+  </div>
+</div>
+
+<script src="notify.js" type="module"></script>
+</body>
+</html>
