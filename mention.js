@@ -5,16 +5,16 @@
 
 // ---- Seed data (sandbox only — swap for storage.js/Firestore later) ----
 export const orders = [
-    { id: "o1", title: "Elvins Tabanovs", PR: "15535", PU: "15534", revenue: "19" },
-    { id: "o2", title: "TARRO", PR: "15488", PU: "15487", revenue: "1204.50" },
-    { id: "o3", title: "KESTREL", PR: "15602", PU: "15601", revenue: "399.00" },
-    { id: "o4", title: "MOLINA", PR: "15577", PU: "15576", revenue: "2110.00" },
-    { id: "o5", title: "BRAVUS", PR: "15340", PU: "15339", revenue: "678.20" },
-    { id: "o6", title: "ORVELL", PR: "15419", PU: "15418", revenue: "955.00" },
+    { id: "o1", title: "VISLA", pr: 15531, revenue: 842.00 },
+    { id: "o2", title: "TARRO", pr: 15488, revenue: 1204.50 },
+    { id: "o3", title: "KESTREL", pr: 15602, revenue: 399.00 },
+    { id: "o4", title: "MOLINA", pr: 15577, revenue: 2110.00 },
+    { id: "o5", title: "BRAVUS", pr: 15340, revenue: 678.20 },
+    { id: "o6", title: "ORVELL", pr: 15419, revenue: 955.00 },
 ];
 
 const MAX_RESULTS = 6;
-const SEARCH_FIELDS = ["title", "PR", "PU", "revenue"];
+const SEARCH_FIELDS = ["title", "pr", "revenue"];
 
 // ---- Caret pixel position (mirror-div technique) ----
 const MIRROR_PROPS = [
@@ -123,7 +123,8 @@ export function initMention(textarea, options = {}) {
 
             const meta = document.createElement("div");
             meta.className = "mention-item-meta";
-            meta.textContent = `PR ${order.PR} \u00b7 PU ${order.PU} \u00b7 \u20ac${order.revenue}`;
+            const pu = order.pr == null ? "" : order.pr - 1;
+            meta.textContent = `PR ${order.pr} \u00b7 PU ${pu} \u00b7 \u20ac${order.revenue}`;
 
             item.appendChild(title);
             item.appendChild(meta);

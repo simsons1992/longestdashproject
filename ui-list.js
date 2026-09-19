@@ -15,6 +15,10 @@ const filterEl = document.getElementById("status-filter");
 let searchTerm = "";
 let statusFilter = "all";
 let currentOrders = []; // last rendered, filtered + sorted list — index-aligned with the rows on screen
+// last loaded, unfiltered by search/status — used by other features (e.g.
+// reminder @-mentions) that need every currently-loaded order regardless
+// of whatever's typed in the search box or which status chip is active
+let allOrders = [];
 let selectedIndex = -1; // which row Up/Down/Enter currently act on
 
 function el(tag, className) {
@@ -249,8 +253,16 @@ function openSelectedOrder() {
   if (order) openCard(order);
 }
 
+// Every currently-loaded order, unfiltered and unsorted — for features
+// outside the list itself (reminder @-mentions) that need "everything on
+// the page" rather than "whatever the search box currently shows".
+function getOrders() {
+  return allOrders;
+}
+
 async function renderList() {
   const orders = await loadOrders();
+  allOrders = orders;
   currentOrders = orders
     .filter(matchesFilters)
     .sort((a, b) => b.createdAt - a.createdAt);
@@ -279,4 +291,4 @@ function initList() {
   renderList();
 }
 
-export { initList, renderList, moveSelection, openSelectedOrder };
+export { initList, renderList, moveSelection, openSelectedOrder, getOrders };

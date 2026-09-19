@@ -58,7 +58,8 @@ function buildPlaceholderModal() {
     return {
         open(order) {
             title.textContent = order.title;
-            meta.textContent = `PR ${order.PR} \u00b7 PU ${order.PU} \u00b7 \u20ac${order.revenue}`;
+            const pu = order.pr == null ? "" : order.pr - 1;
+            meta.textContent = `PR ${order.pr} \u00b7 PU ${pu} \u00b7 \u20ac${order.revenue}`;
             overlay.classList.remove("hidden");
         },
     };

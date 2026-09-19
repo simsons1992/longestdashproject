@@ -1,6 +1,6 @@
 :root {
     --main-background: #f7f7f8;
-    --white: #FAFAFA;
+    --white: #fafafa;
     --black: #222222;
     --negative: #22222240;
     --brand-color: greenyellow;
@@ -18,7 +18,7 @@
    ========================================================= */
 
 .material-symbols-rounded {
-    font-family: 'Material Symbols Rounded';
+    font-family: "Material Symbols Rounded";
     font-weight: normal;
     font-style: normal;
     font-size: 24px;
@@ -30,9 +30,9 @@
     word-wrap: normal;
     direction: ltr;
 
-    -webkit-font-feature-settings: 'liga';
+    -webkit-font-feature-settings: "liga";
     -webkit-font-smoothing: antialiased;
-    font-feature-settings: 'liga';
+    font-feature-settings: "liga";
 }
 
 /* =========================================================
@@ -43,11 +43,7 @@ body {
     margin: 0;
     background-color: var(--main-background);
     font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Roboto,
-        sans-serif;
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 .notify-page {
@@ -58,6 +54,15 @@ body {
     justify-content: center;
 
     padding-top: 80px;
+}
+
+/* Fixed top-right widget placement for the real app (index.html).
+   .notify-page above stays only for the standalone notify.html sandbox. */
+.notify-widget {
+    position: fixed;
+    top: 24px;
+    right: 28px;
+    z-index: 150;
 }
 
 /* =========================================================
@@ -163,8 +168,7 @@ body {
 
     color: var(--white);
 
-    box-shadow:
-        0 14px 30px rgba(20, 20, 43, 0.25);
+    box-shadow: 0 14px 30px rgba(20, 20, 43, 0.25);
 
     transition:
         transform 0.22s ease,
@@ -183,29 +187,23 @@ body {
 }
 
 .reminder-card[data-depth="1"] {
-    transform:
-        translateY(10px)
-        scale(0.96);
+    transform: translateY(10px) scale(0.96);
 
     filter: brightness(0.72);
 
     z-index: 2;
 
-    box-shadow:
-        0 8px 0 -2px rgba(20, 20, 43, 0.18);
+    box-shadow: 0 8px 0 -2px rgba(20, 20, 43, 0.18);
 }
 
 .reminder-card[data-depth="2"] {
-    transform:
-        translateY(20px)
-        scale(0.92);
+    transform: translateY(20px) scale(0.92);
 
     filter: brightness(0.5);
 
     z-index: 1;
 
-    box-shadow:
-        0 6px 0 -2px rgba(20, 20, 43, 0.12);
+    box-shadow: 0 6px 0 -2px rgba(20, 20, 43, 0.12);
 }
 
 /* =========================================================
@@ -224,10 +222,10 @@ body {
     color: var(--red);
 
     font-variation-settings:
-        'FILL' 1,
-        'wght' 500,
-        'GRAD' 0,
-        'opsz' 24;
+        "FILL" 1,
+        "wght" 500,
+        "GRAD" 0,
+        "opsz" 24;
 }
 
 .reminder-card-icon .material-symbols-rounded {
@@ -397,16 +395,10 @@ body {
     width: 100%;
 
     height: 0;
+    max-height: calc(100vh - 140px);
+    overflow-y: auto;
 
-    overflow: hidden;
-
-    transition:
-        height 0.42s cubic-bezier(
-            0.34,
-            1.56,
-            0.64,
-            1
-        );
+    transition: height 0.42s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .expanded-panel.open {
@@ -438,8 +430,7 @@ body {
 
     filter: none;
 
-    box-shadow:
-        0 6px 16px rgba(20, 20, 43, 0.15);
+    box-shadow: 0 6px 16px rgba(20, 20, 43, 0.15);
 }
 
 .expanded-list .reminder-card-delete {
@@ -455,8 +446,7 @@ body {
 
     inset: 0;
 
-    background-color:
-        rgba(20, 20, 43, 0.35);
+    background-color: rgba(20, 20, 43, 0.35);
 
     display: flex;
 
@@ -483,17 +473,13 @@ body {
 
     border-radius: 20px;
 
-    padding:
-        26px
-        24px
-        24px;
+    padding: 26px 24px 24px;
 
     display: flex;
 
     flex-direction: column;
 
-    box-shadow:
-        0 20px 60px rgba(20, 20, 43, 0.2);
+    box-shadow: 0 20px 60px rgba(20, 20, 43, 0.2);
 }
 
 /* =========================================================
@@ -557,10 +543,10 @@ body {
     font-size: 26px;
 
     font-variation-settings:
-        'FILL' 1,
-        'wght' 400,
-        'GRAD' 0,
-        'opsz' 24;
+        "FILL" 1,
+        "wght" 400,
+        "GRAD" 0,
+        "opsz" 24;
 }
 
 .reminder-form-title {
@@ -582,8 +568,7 @@ body {
 
     resize: none;
 
-    border:
-        1px solid transparent;
+    border: 1px solid transparent;
 
     background-color: var(--selected);
 
@@ -634,16 +619,13 @@ body {
 
     min-width: 0;
 
-    border:
-        1px solid transparent;
+    border: 1px solid transparent;
 
     background-color: var(--selected);
 
     border-radius: 12px;
 
-    padding:
-        12px
-        14px;
+    padding: 12px 14px;
 
     font-size: 13px;
 
@@ -665,6 +647,22 @@ body {
     background-color: var(--white);
 }
 
+@keyframes field-shake {
+    25% {
+        transform: translateX(-4px);
+    }
+
+    75% {
+        transform: translateX(4px);
+    }
+}
+
+.reminder-date-input.field-error,
+.reminder-time-input.field-error {
+    animation: field-shake 0.4s;
+    border-color: var(--red);
+}
+
 /* =========================================================
    CREATE BUTTON
    ========================================================= */
@@ -680,9 +678,7 @@ body {
 
     border-radius: 10px;
 
-    padding:
-        10px
-        32px;
+    padding: 10px 32px;
 
     font-size: 13px;
 
@@ -731,19 +727,17 @@ body {
 }
 
 .reminder-card.bounce {
-    animation:
-        card-bounce 0.32s ease;
+    animation: card-bounce 0.32s ease;
 }
 
 /* =========================================================
    ACCESSIBILITY
    ========================================================= */
 
-button:focus-visible,
+/* button:focus-visible,
 input:focus-visible,
 textarea:focus-visible {
-    outline:
-        2px solid var(--brand-color);
+    outline: 2px solid var(--brand-color);
 
     outline-offset: 2px;
-}
+} */

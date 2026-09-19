@@ -88,8 +88,13 @@
 }
 
 @keyframes shake {
-    25% { transform: translateX(-4px); }
-    75% { transform: translateX(4px); }
+    25% {
+        transform: translateX(-4px);
+    }
+
+    75% {
+        transform: translateX(4px);
+    }
 }
 
 /* was margin-bottom: 16px; on .ordercard .status-pill — moved to the row */
@@ -308,7 +313,8 @@
 
 .ordercard {
     transition: border-radius 0.28s ease;
-    z-index: 1; /* keep left card's shadow above the note panel's edge */
+    z-index: 1;
+    /* keep left card's shadow above the note panel's edge */
 }
 
 .ordercard-shell.expanded .ordercard {

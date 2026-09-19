@@ -1,21 +1,73 @@
-// notify.js — standalone reminder/notification sandbox.
-// Mirrors card.html/cardstyle.css conventions: flat structure, no
-// innerHTML/markup strings, DOM built via createElement.
+// notify.js — reminder/notification widget.
+// No innerHTML/markup strings, DOM built via createElement, per project
+// convention.
 
 import { initMention } from "./mention.js";
 import { renderNoteText } from "./note-links.js";
+import { openCard } from "./ui-card.js";
+import { getOrders } from "./ui-list.js";
 
 const VISIBLE_DEPTH = 3; // how many cards show in the stacked preview
-
-// ---- Seed data (sandbox only — no persistence yet) ----
-let reminders = [
-    { id: cryptoId(), text: "Call @elpar about parts", date: "2026-09-13", time: "15:00" },
-
-];
+const STORAGE_KEY = "dashedcrm-reminders";
 
 function cryptoId() {
     return Math.random().toString(36).slice(2, 10);
 }
+
+// "05.09" -> "<currentYear>-09-05" ISO date string, "" if invalid. Same
+// dd.mm-current-year-assumed convention as ui-card.js's delivery field.
+function parseDateInput(str) {
+    if (!str) return "";
+    const match = str.trim().match(/^(\d{1,2})\.(\d{1,2})$/);
+    if (!match) return "";
+    const day = Number(match[1]);
+    const month = Number(match[2]);
+    if (month < 1 || month > 12 || day < 1 || day > 31) return "";
+    const year = new Date().getFullYear();
+    const dd = String(day).padStart(2, "0");
+    const mm = String(month).padStart(2, "0");
+    return `${year}-${mm}-${dd}`;
+}
+
+// "9:5" -> "09:05", 24h only, "" if invalid.
+function parseTimeInput(str) {
+    if (!str) return "";
+    const match = str.trim().match(/^([01]?\d|2[0-3]):([0-5]\d)$/);
+    if (!match) return "";
+    return `${String(Number(match[1])).padStart(2, "0")}:${match[2]}`;
+}
+
+function flashFieldError(inputEl) {
+    inputEl.classList.add("field-error");
+    inputEl.focus();
+    setTimeout(() => inputEl.classList.remove("field-error"), 600);
+}
+
+// ---- localStorage persistence ----
+// Reminders are local-only for now (not synced to Firestore) — a
+// per-browser convenience layer on top of the real order data.
+
+function loadReminders() {
+    try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return [];
+        const parsed = JSON.parse(raw);
+        return Array.isArray(parsed) ? parsed : [];
+    } catch {
+        return [];
+    }
+}
+
+function saveReminders() {
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(reminders));
+    } catch {
+        // storage full/unavailable/blocked — reminders still work for
+        // this session, they just won't survive a reload
+    }
+}
+
+let reminders = loadReminders();
 
 // ---- DOM refs ----
 const stackEl = document.getElementById("reminderStack");
@@ -32,7 +84,7 @@ const dateInput = document.getElementById("reminderDateInput");
 const timeInput = document.getElementById("reminderTimeInput");
 const createBtn = document.getElementById("createReminderBtn");
 
-const mention = initMention(textInput);
+const mention = initMention(textInput, { getOrders });
 
 let isExpanded = false;
 
@@ -63,7 +115,7 @@ function buildReminderCard(reminder, depth) {
 
     const text = document.createElement("div");
     text.className = "reminder-card-text";
-    renderNoteText(text, reminder.text);
+    renderNoteText(text, reminder.text, { getOrders, onOpenOrder: openCard });
 
     const time = document.createElement("div");
     time.className = "reminder-card-time";
@@ -156,15 +208,17 @@ function toggleExpanded() {
 
 function deleteReminder(id) {
     const card = stackEl.querySelector(`[data-id="${id}"]`) ||
-                 expandedListEl.querySelector(`[data-id="${id}"]`);
+        expandedListEl.querySelector(`[data-id="${id}"]`);
     if (card) {
         card.classList.add("bounce");
         setTimeout(() => {
             reminders = reminders.filter((r) => r.id !== id);
+            saveReminders();
             renderStack();
         }, 160);
     } else {
         reminders = reminders.filter((r) => r.id !== id);
+        saveReminders();
         renderStack();
     }
 }
@@ -243,12 +297,26 @@ createBtn.addEventListener("click", () => {
         textInput.focus();
         return;
     }
+
+    const date = parseDateInput(dateInput.value);
+    if (dateInput.value.trim() && !date) {
+        flashFieldError(dateInput);
+        return;
+    }
+
+    const time = parseTimeInput(timeInput.value);
+    if (timeInput.value.trim() && !time) {
+        flashFieldError(timeInput);
+        return;
+    }
+
     reminders.unshift({
         id: cryptoId(),
         text,
-        date: dateInput.value,
-        time: timeInput.value,
+        date,
+        time,
     });
+    saveReminders();
     closeReminderForm();
     renderStack();
 });

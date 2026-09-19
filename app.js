@@ -7,6 +7,7 @@ import { initCard, openCard } from "./ui-card.js";
 const newOrderBtn = document.getElementById("new-order-btn");
 const searchInput = document.getElementById("order-search");
 const overlay = document.getElementById("overlay");
+const reminderOverlay = document.getElementById("reminderOverlay");
 
 initCard(() => renderList());
 initList();
@@ -14,6 +15,11 @@ initList();
 newOrderBtn.addEventListener("click", () => openCard(null));
 
 document.addEventListener("keydown", (event) => {
+  // While the order card or the reminder form is open, they own their own
+  // keyboard handling entirely — this listener must not also act.
+  if (!overlay.classList.contains("hidden")) return;
+  if (reminderOverlay && !reminderOverlay.classList.contains("hidden")) return;
+
   if (event.ctrlKey && event.key === "1") {
     event.preventDefault();
     openCard(null);
@@ -28,9 +34,6 @@ document.addEventListener("keydown", (event) => {
     searchInput.select();
     return;
   }
-
-  // While the card is open, ui-card.js owns Arrow/Enter for field navigation.
-  if (!overlay.classList.contains("hidden")) return;
 
   if (event.key === "ArrowDown") {
     event.preventDefault();
