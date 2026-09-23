@@ -22,6 +22,8 @@ const revenueInput = document.getElementById("card-revenue");
 const deleteBtn = document.getElementById("card-delete");
 const saveBtn = document.getElementById("card-save");
 const closeBtn = document.getElementById("card-close");
+const copyBtn = document.getElementById("card-copy");
+const copyIconEl = document.getElementById("card-copy-icon");
 
 // Expanding notes panel (right side, quick-capture note log)
 const newNoteInput = document.getElementById("card-note-new");
@@ -89,6 +91,8 @@ function setStatusPill(statusId) {
 
   statusBtn.style.setProperty("--pill-color", status.color);
   statusBtn.style.setProperty("--pill-bg", status.bg);
+
+  copyBtn.hidden = statusId !== "stock";
 }
 
 
@@ -124,6 +128,28 @@ function refreshPU() {
   const pr = prInput.value === "" ? null : Number(prInput.value);
   puInput.value = pr === null || Number.isNaN(pr) ? "" : pr - 1;
 }
+
+// Builds the Latvian pickup-ready message, pulling the order number from PR.
+function buildPickupMessage() {
+  const pr = prInput.value.trim() || "—";
+  return `Informējam, ka Jūsu pasūtījums ${pr} ir sagatavots saņemšanai.\n\nPasūtījumu varat izņemt adresē:\nZemzaru iela 1, Mārupe.\nDarba dienās no 9:00 līdz 17:30.\nAr cieņu, VEHO`;
+}
+
+async function handleCopy() {
+  const text = buildPickupMessage();
+  try {
+    await navigator.clipboard.writeText(text);
+    copyIconEl.textContent = "check";
+    copyBtn.classList.add("copied");
+    setTimeout(() => {
+      copyIconEl.textContent = "content_copy";
+      copyBtn.classList.remove("copied");
+    }, 1200);
+  } catch (err) {
+    console.error("Clipboard copy failed:", err);
+  }
+}
+
 
 // Feeds the custom CSS tooltip (see .note-wrap in cardstyle.css) instead of
 // the native title attribute, which browsers render and can't be styled.
@@ -394,11 +420,11 @@ function initCard(onSaved) {
     noteWrap.style.setProperty("--tooltip-x", `${event.clientX}px`);
     noteWrap.style.setProperty("--tooltip-y", `${event.clientY}px`);
   });
-
+  copyBtn.addEventListener("click", handleCopy);
   saveBtn.addEventListener("click", handleSave);
   deleteBtn.addEventListener("click", handleDelete);
   closeBtn.addEventListener("click", closeCard);
-
+ 
   overlay.addEventListener("click", (event) => {
     if (event.target === overlay) closeCard();
   });

@@ -496,3 +496,32 @@
     background-color: #f0f0f2;
     color: #6b6d76;
 }
+
+.status-row-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.copy-btn {
+    border: none;
+    background: transparent;
+    padding: 0;
+    font-size: 20px;
+    line-height: 1;
+    color: var(--muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.copy-btn[hidden] {
+    display: none;
+}
+.copy-btn:hover {
+    color: var(--black);
+}
+
+.copy-btn.copied {
+    color: var(--brand-color);
+}

@@ -1,13 +1,13 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>card design</title>
     <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-    <link rel="stylesheet" href="cardstyle.css">
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="cardstyle.css" />
 </head>
 
 <body>
@@ -16,35 +16,41 @@
             <div class="ordercard">
                 <button class="card-close" id="card-close">&times;</button>
 
-                <input type="text" id="card-title" class="title" placeholder="TITLE">
+                <input type="text" id="card-title" class="title" placeholder="TITLE" />
                 <div class="card-status-row">
                     <button type="button" class="status-pill" id="card-status"></button>
-                    <span class="material-symbols-rounded note-counter" id="note-counter" hidden></span>
+                    <div class="status-row-right">
+                        <button type="button" class="copy-btn" id="card-copy">
+                            <span class="material-symbols-rounded copy-btn-icon" id="card-copy-icon">content_copy</span>
+                        </button>
+                        <span class="material-symbols-rounded note-counter" id="note-counter" hidden></span>
+                    </div>
                 </div>
-                
 
                 <div class="note-wrap">
-                    <input type="text" id="card-note" class="note" placeholder="note...">
+                    <input type="text" id="card-note" class="note" placeholder="note..." />
                 </div>
 
-                <input type="text" id="card-phone" class="phone" placeholder="phone...">
-                <input type="email" id="card-email" class="email" placeholder="email...">
-                <input type="text" id="card-delivery" class="Delivery" placeholder="dd.mm">
+                <input type="text" id="card-phone" class="phone" placeholder="phone..." />
+                <input type="email" id="card-email" class="email" placeholder="email..." />
+                <input type="text" id="card-delivery" class="Delivery" placeholder="dd.mm" />
 
                 <div class="divider"></div>
 
                 <div class="bottom-row">
-                    <input type="number" id="card-pr" class="PR" placeholder="pr...">
-                    <input type="number" id="card-pu" class="PU" placeholder="pu..." disabled>
+                    <input type="number" id="card-pr" class="PR" placeholder="pr..." />
+                    <input type="number" id="card-pu" class="PU" placeholder="pu..." disabled />
                 </div>
 
                 <div class="revenue-wrap">
                     <span class="currency">€</span>
-                    <input type="number" id="card-revenue" class="revenue" placeholder="0">
+                    <input type="number" id="card-revenue" class="revenue" placeholder="0" />
                 </div>
 
                 <div class="card-actions">
-                    <button type="button" id="card-delete" class="delete-btn" hidden>Delete</button>
+                    <button type="button" id="card-delete" class="delete-btn" hidden>
+                        Delete
+                    </button>
                     <button type="button" id="card-save" class="save-btn">Save</button>
                 </div>
             </div>
