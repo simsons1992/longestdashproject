@@ -3,6 +3,7 @@
 const TEMPLATES = [
   { title: "Priekšapmaksa", text: "Paldies, nosūtam priekšapmaksas rēķinu." },
   { title: "New order", text: "Nosūtam priekšapmaksas rēķinu par pasūtījumu:" },
+
   {
     title: "GLE 167 Coupe Floor",
     text: "Priekšējie: 145.39 EUR ar PVN (A16768063069G33)\nAizmugurējie: 86.84 EUR ar PVN (A16768069069G33)",
@@ -18,6 +19,12 @@ const TEMPLATES = [
     title: "C206 Floor",
     text: "Priekšējie: 135.64 EUR ar PVN (A20668020049G33)\nAizmugurējie: 72.21 EUR ar PVN (A20668026049G33)",
   },
+
+  {
+    title: "GLC 540 floor",
+    text: "Priekšējie: 138.57 EUR ar PVN (A54068075029051)\nAizmugurējie: 83.91 EUR ar PVN (A54068076029051)",
+  },
+
   {
     title: "Yokohama",
     image: "https://shop.latakko.eu/api/articleImages/8021",

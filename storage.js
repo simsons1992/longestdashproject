@@ -6,6 +6,7 @@ import {
   getFirestore,
   collection,
   getDocs,
+  getDoc,
   addDoc,
   updateDoc,
   deleteDoc,
@@ -27,10 +28,17 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const ordersCollection = collection(db, "orders");
 
-// One-time fetch — call this whenever you need a fresh list (app launch,
-// after a save/delete). No live listener; nothing updates until you call
-// this again.
-async function loadOrders() {
+// Done orders stay visible for this long after completedAt, then are hidden
+// from the app (they remain in Firestore).
+const DONE_TTL = 31 * 24 * 60 * 60 * 1000;
+
+function isVisible(o) {
+  if (o.status !== "done") return true;
+  if (!o.completedAt) return true; // never hide an order without a date
+  return Date.now() - o.completedAt <= DONE_TTL;
+}
+
+async function loadAllOrders() {
   try {
     const snapshot = await getDocs(ordersCollection);
     return snapshot.docs.map((docSnap) => ({ id: docSnap.id, ...docSnap.data() }));
@@ -38,6 +46,10 @@ async function loadOrders() {
     console.error("Could not read orders from Firestore", err);
     return [];
   }
+}
+
+async function loadOrders() {
+  return (await loadAllOrders()).filter(isVisible);
 }
 
 async function createOrder(data) {
@@ -51,6 +63,7 @@ async function createOrder(data) {
     revenue: data.revenue === "" || data.revenue === undefined ? null : data.revenue,
     delivery: data.delivery || "",
     createdAt: Date.now(),
+    completedAt: data.status === "done" ? Date.now() : null,
   };
   try {
     const docRef = await addDoc(ordersCollection, order);
@@ -63,7 +76,17 @@ async function createOrder(data) {
 
 async function updateOrder(id, patch) {
   try {
-    await updateDoc(doc(db, "orders", id), patch);
+    const ref = doc(db, "orders", id);
+    if (patch.status !== undefined) {
+      if (patch.status === "done") {
+        // Only stamp on the transition to done, not on every later save.
+        const current = await getDoc(ref);
+        if (!current.data()?.completedAt) patch = { ...patch, completedAt: Date.now() };
+      } else {
+        patch = { ...patch, completedAt: null }; // reopened, so the clock resets
+      }
+    }
+    await updateDoc(ref, patch);
     return true;
   } catch (err) {
     console.error("Could not update order in Firestore", err);
@@ -81,4 +104,4 @@ async function deleteOrder(id) {
   }
 }
 
-export { loadOrders, createOrder, updateOrder, deleteOrder };
+export { loadOrders, loadAllOrders, createOrder, updateOrder, deleteOrder };

@@ -263,6 +263,16 @@ expandHandleEl.addEventListener("click", (event) => {
     toggleExpanded();
 });
 
+// clicking the reminder stack itself also toggles the expanded panel
+stackEl.addEventListener("click", (event) => {
+    // Don't expand when clicking the delete button or interactive content
+    if (event.target.closest("button, a, input, textarea, select")) {
+        return;
+    }
+
+    toggleExpanded();
+});
+
 // ---- New reminder overlay ----
 
 function openReminderForm() {

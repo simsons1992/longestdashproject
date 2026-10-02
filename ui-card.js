@@ -4,6 +4,7 @@
 import { createOrder, updateOrder, deleteOrder } from "./storage.js";
 import { getStatus, DEFAULT_STATUS } from "./statuses.js";
 import { openStatusPicker, isPopoverOpen } from "./status-picker.js";
+import { showToast } from "./toast.js"; // <-- add
 
 const overlay = document.getElementById("overlay");
 const cardShell = document.getElementById("card-shell");
@@ -78,6 +79,23 @@ function formatDeliveryForInput(value) {
   return `${dd}.${mm}`;
 }
 
+
+// Status id that triggers the auto delivery date. Must match the id in statuses.js.
+const ON_ORDER_STATUS = "on-order"; // <-- adjust if your id differs
+
+// Today + 2 days; if that lands on Sat/Sun, roll forward to Monday.
+// Returns "dd.mm" for the delivery input.
+function defaultDeliveryDate() {
+  const d = new Date();
+  d.setDate(d.getDate() + 2);
+  const day = d.getDay(); // 0 = Sun, 6 = Sat
+  if (day === 6) d.setDate(d.getDate() + 2);
+  else if (day === 0) d.setDate(d.getDate() + 1);
+  const dd = String(d.getDate()).padStart(2, "0");
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  return `${dd}.${mm}`;
+}
+
 function setStatusPill(statusId) {
   currentStatusId = statusId;
   const status = getStatus(statusId);
@@ -139,6 +157,7 @@ async function handleCopy() {
   const text = buildPickupMessage();
   try {
     await navigator.clipboard.writeText(text);
+    showToast("Message copied to clipboard"); // <-- new
     copyIconEl.textContent = "check";
     copyBtn.classList.add("copied");
     setTimeout(() => {
@@ -147,8 +166,26 @@ async function handleCopy() {
     }, 1200);
   } catch (err) {
     console.error("Clipboard copy failed:", err);
+    showToast("Copy failed", { type: "error" }); // <-- new
   }
 }
+
+async function handleCopyPU() {
+  const value = puInput.value.trim();
+  if (!value) {
+    showToast("Nothing to copy", { type: "error" });
+    return;
+  }
+  try {
+    await navigator.clipboard.writeText(value);
+    showToast("PU copied to clipboard");
+  } catch (err) {
+    console.error("Clipboard copy failed:", err);
+    showToast("Copy failed", { type: "error" });
+  }
+}
+
+
 
 
 // Feeds the custom CSS tooltip (see .note-wrap in cardstyle.css) instead of
@@ -382,7 +419,13 @@ async function handleDelete() {
 // same as Enter anywhere else on the card) from a mouse click (just update
 // the pill; a following Enter on the status button handles save + advance).
 async function handleStatusSelected(statusId, meta = {}) {
+  const previousStatusId = currentStatusId;
   setStatusPill(statusId);
+
+  // Only when actually switching into "on order" — still freely editable after.
+  if (statusId === ON_ORDER_STATUS && previousStatusId !== statusId) {
+    deliveryInput.value = defaultDeliveryDate();
+  }
 
   if (!meta.viaKeyboard) {
     statusJustChanged = true;
@@ -395,6 +438,9 @@ async function handleStatusSelected(statusId, meta = {}) {
     statusJustChanged = true;
   }
 }
+
+
+
 
 // Opens (if needed) and focuses the quick-capture note field. Shared by
 // Alt+Right (open the panel) and Alt+N (jump straight to note-taking).
@@ -436,11 +482,30 @@ function initCard(onSaved) {
     // (it also calls stopPropagation, this is just a safety net).
     if (isPopoverOpen()) return;
 
+    // Alt+C: same as the copy button, so only when status is "stock".
+    // event.code so it also works on macOS, where Option+C types "ç".
+    if (event.altKey && event.code === "KeyC") {
+      event.preventDefault();
+      if (currentStatusId === "stock") handleCopy();
+      return;
+    }
+
+
+
+
     // Alt+N: jump straight into quick note-taking from anywhere in the card,
     // opening the panel first if it's closed.
     if (event.altKey && event.key.toLowerCase() === "n") {
       event.preventDefault();
       focusNewNote();
+      return;
+    }
+
+        // Ctrl+Shift+C: copy the PU value (works from any field).
+    // event.code so it's layout-independent.
+    if (event.ctrlKey && event.shiftKey && !event.altKey && event.code === "KeyC") {
+      event.preventDefault(); // stops the browser's DevTools inspect shortcut
+      handleCopyPU();
       return;
     }
 

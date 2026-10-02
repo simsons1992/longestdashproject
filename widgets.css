@@ -4,7 +4,10 @@
     --border: #e5e7eb;
     --surface: #ffffff;
     --surface-muted: #fafafa;
+    --brand-color: greenyellow;
 }
+
+
 
 * {
     box-sizing: border-box;
@@ -30,8 +33,9 @@
     height: 240px;
     background-color: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 20%;
+    
     corner-shape: squircle;
+    border-radius: 20%;
     padding: 16px;
     display: flex;
     flex-direction: column;
@@ -190,4 +194,75 @@
     font-size: 12px;
     color: var(--muted);
     padding: 8px 4px;
+}
+
+
+/* ---------- Revenue widget (append to widgets.css) ---------- */
+.revenue-widget {
+    gap: 0;
+    justify-content: flex-start;
+}
+
+.revenue-widget .revenue-icon {
+    font-size: 28px;
+    color: var(--ink);
+    margin-bottom: auto;
+    color: var(--brand-color);
+}
+
+.revenue-label {
+    margin: 0 0 4px;
+    font-size: 13px;
+    color: var(--muted);
+}
+
+.revenue-label.small {
+    font-size: 11px;
+    margin-bottom: 2px;
+}
+
+.this-month-revenue {
+    margin: 0 0 8px;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    white-space: nowrap;
+}
+
+.last-month-revenue {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    padding: 3px 8px 3px 2px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.last-month-revenue .material-symbols-rounded {
+    font-size: 20px;
+    color: inherit;
+}
+
+.last-month-revenue.is-up {
+    background-color: #e9f8ee;
+    color: #1f9d4d;
+}
+
+.last-month-revenue.is-down {
+    background-color: #fdeded;
+    color: #d64545;
+}
+
+.revenue-stock {
+    margin-top: auto;
+}
+
+.stock-volume {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
 }

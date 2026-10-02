@@ -33,6 +33,7 @@ function formatRevenue(value) {
     style: "currency",
     currency: "EUR",
     maximumFractionDigits: 2,
+    useGrouping: false,
   }).format(value);
 }
 
@@ -40,6 +41,7 @@ function formatDate(value) {
   if (!value) return "";
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return "";
+  if (date.toDateString() === new Date().toDateString()) return "Today";
   return date.toLocaleDateString("en-GB", { day: "2-digit", month: "short" });
 }
 
