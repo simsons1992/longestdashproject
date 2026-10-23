@@ -17,12 +17,21 @@ const TEMPLATES = [
   },
   {
     title: "C206 Floor",
-    text: "Priekšējie: 135.64 EUR ar PVN (A20668020049G33)\nAizmugurējie: 72.21 EUR ar PVN (A20668026049G33)",
+    text: "Priekšējie: 135.64 EUR ar PVN (A20668020049G33)\nAizmugurējie: 72.21 EUR ar PVN (A20668026049G33)\nKopā: 207.85 EUR ar PVN",
   },
 
   {
     title: "GLC 540 floor",
     text: "Priekšējie: 138.57 EUR ar PVN (A54068075029051)\nAizmugurējie: 83.91 EUR ar PVN (A54068076029051)",
+  },
+
+  {
+    title: "GLC 254 floor",
+    text: "Priekšējie: 138.57 EUR ar PVN (A25468004049051)\nAizmugurējie: 83.91 EUR ar PVN (A25468014049051)",
+  },
+  {
+    title: "Appoitment",
+    text: "https://www.mercedes-benz.lv/book-a-service/"
   },
 
   {

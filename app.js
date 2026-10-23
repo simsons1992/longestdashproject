@@ -8,6 +8,34 @@ const newOrderBtn = document.getElementById("new-order-btn");
 const searchInput = document.getElementById("order-search");
 const overlay = document.getElementById("overlay");
 const reminderOverlay = document.getElementById("reminderOverlay");
+const filterEl = document.getElementById("status-filter");
+
+// 1-5 jump straight to a status filter chip. Matched by the chip's visible
+// label text rather than statuses.js's internal id, so this keeps working
+// regardless of id naming or the order STATUSES is defined in — it only
+// breaks if a label's wording changes.
+const STATUS_SHORTCUT_LABELS = {
+  "1": "all",
+  "2": "billed",
+  "3": "on order",
+  "4": "stock",
+  "5": "done",
+};
+
+function selectStatusChip(key) {
+  const targetLabel = STATUS_SHORTCUT_LABELS[key];
+  if (!targetLabel || !filterEl) return false;
+
+  const chip = [...filterEl.children].find((c) =>
+    targetLabel === "all"
+      ? c.dataset.status === "all"
+      : c.textContent.trim().toLowerCase() === targetLabel
+  );
+  if (!chip) return false;
+
+  chip.click(); // reuses ui-list.js's own delegated click handler/renderList
+  return true;
+}
 
 initCard(() => renderList());
 initList();
@@ -33,6 +61,17 @@ document.addEventListener("keydown", (event) => {
     searchInput.focus();
     searchInput.select();
     return;
+  }
+
+  // Plain 1-5 (no modifiers) switch the status filter — but never while
+  // the user is typing somewhere (e.g. "15531" in the search box).
+  if (!event.ctrlKey && !event.altKey && !event.metaKey && /^[1-5]$/.test(event.key)) {
+    const active = document.activeElement;
+    const isTyping = active && (active.tagName === "INPUT" || active.tagName === "TEXTAREA");
+    if (!isTyping && selectStatusChip(event.key)) {
+      event.preventDefault();
+      return;
+    }
   }
 
   if (event.key === "ArrowDown") {

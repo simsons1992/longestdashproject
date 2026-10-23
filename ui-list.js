@@ -265,6 +265,7 @@ function getOrders() {
 async function renderList() {
   const orders = await loadOrders();
   allOrders = orders;
+  window.dispatchEvent(new CustomEvent("orders-updated"));
   currentOrders = orders
     .filter(matchesFilters)
     .sort((a, b) => b.createdAt - a.createdAt);
