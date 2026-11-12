@@ -1,0 +1,53 @@
+/* Overlay shown until the Excel file is connected. Light theme only. */
+.file-connect {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.92);
+}
+
+.file-connect-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 28px 32px;
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    font: inherit;
+    color: #222;
+}
+
+.file-connect-box p {
+    margin: 0;
+}
+
+.file-connect-btn {
+    padding: 8px 18px;
+    font: inherit;
+    color: #fff;
+    background: #222;
+    border: 0;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.file-connect-btn:hover {
+    background: #000;
+}
+
+.file-connect-link {
+    padding: 0;
+    font: inherit;
+    font-size: 0.85em;
+    color: #777;
+    background: none;
+    border: 0;
+    text-decoration: underline;
+    cursor: pointer;
+}
