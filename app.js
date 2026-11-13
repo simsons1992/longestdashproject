@@ -3,6 +3,7 @@
 
 import { initList, renderList, moveSelection, openSelectedOrder } from "./ui-list.js";
 import { initCard, openCard } from "./ui-card.js";
+import { initFileConnect } from "./file-connect.js";
 
 const newOrderBtn = document.getElementById("new-order-btn");
 const searchInput = document.getElementById("order-search");
@@ -39,6 +40,11 @@ function selectStatusChip(key) {
 
 initCard(() => renderList());
 initList();
+
+// Storage is a local Excel file; the browser needs one click to grant access.
+// Once connected, re-render the list (it dispatches "orders-updated", which
+// other widgets can listen to).
+initFileConnect(() => renderList());
 
 newOrderBtn.addEventListener("click", () => openCard(null));
 

@@ -58,7 +58,15 @@ function buildOverlay(state, onConnected) {
 }
 
 async function initFileConnect(onConnected) {
+  let restored = false; // the list loads before the saved file is restored; ignore that early miss
+
+  // Any failed read/write lands here. "Not connected" re-opens the overlay
+  // (once, and only after startup restore has finished); everything else is a toast.
   window.addEventListener("storage-error", (event) => {
+    if (event.detail.message === "NOT_CONNECTED") {
+      if (restored && !document.querySelector(".file-connect")) buildOverlay("needs-permission", onConnected);
+      return;
+    }
     showToast(describeError(event.detail), { type: "error" });
   });
 
@@ -68,6 +76,7 @@ async function initFileConnect(onConnected) {
   }
 
   const state = await restoreHandle();
+  restored = true;
   if (state === "ready") {
     onConnected();
     return;

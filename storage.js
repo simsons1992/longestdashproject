@@ -177,7 +177,6 @@ async function save(book, orders) {
 }
 
 function report(err, what) {
-  if (err.message === "NOT_CONNECTED") return; // file-connect.js is already prompting
   console.error(`Could not ${what} (Excel file)`, err);
   window.dispatchEvent(new CustomEvent("storage-error", { detail: err }));
 }
