@@ -1,0 +1,53 @@
+.widgets {
+    background-color: pink;
+    width: 99vw;
+    height: 220px;
+    margin-bottom: 12px;
+    border-radius: 40px;
+}
+
+.layout-box {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-areas: "calendar order reminder";
+    gap: 16px;
+    background-color: transparent;
+    width: 99vw;
+    height: 90vh;
+    border-radius: 40px;
+}
+
+.calendar-box,
+.order-box,
+.reminder-box {
+    min-width: 0;
+    background-color: paleturquoise;
+    border-radius: 40px;
+}
+
+.calendar-box {
+    grid-area: calendar;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px;
+}
+
+.order-box {
+    grid-area: order;
+}
+
+.reminder-box {
+    grid-area: reminder;
+}
+
+.monday,
+.tuesday,
+.wednesday,
+.thursday,
+.friday {
+    background-color: white;
+    flex: 1 1 0;
+    min-height: 0;
+    border-radius: 32px;
+}
