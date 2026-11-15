@@ -1,0 +1,168 @@
+/* calendar-box — Mon–Fri week of "on order" orders.
+   Colors come from the root tokens in style.css / the status color. */
+
+.calendar-box {
+    grid-area: calendar;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 0;
+    min-height: 0;
+    background-color: transparent;
+}
+
+/* ---------- week navigation ---------- */
+.cal-nav {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 8px;
+}
+
+.cal-nav .seg-toggle {
+    --seg-count: 3;
+    width: 264px;
+}
+
+.cal-nav .material-symbols-rounded {
+    font-size: 16px;
+}
+
+.cal-nav-range {
+    margin-left: auto;
+    white-space: nowrap;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+}
+
+/* ---------- day panel ----------
+   Height is exactly the content: header + cards, so a day grows card by
+   card and never has empty space inside. An empty day is a small fixed
+   strip. If the week is too full for the box, busy days shrink (never
+   below the min) and scroll inside. */
+.cal-day {
+    flex: 0 1 auto;
+    min-height: 94px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 14px 12px 12px;
+    background-color: transparent;
+    border-radius: 14px;
+    border: solid 0.5px var()
+}
+
+.cal-day.is-empty {
+    flex: 0 0 56px;
+    min-height: 0;
+    padding-bottom: 0;
+}
+
+.cal-day-head {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 10px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+.cal-day.is-empty .cal-day-head {
+    padding-bottom: 0;
+}
+
+.cal-day-num {
+    color: var(--black);
+}
+
+.cal-day-sep {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: transparent;
+}
+
+.cal-day.is-today .cal-day-sep {
+    background-color: var(--red);
+}
+
+/* ---------- card list ---------- */
+.cal-list {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+}
+
+.cal-list:hover {
+    scrollbar-color: var(--negative) transparent;
+}
+
+/* ---------- card ---------- */
+/* No transform here: the cursor tooltip (.tooltip-target in style.css) is
+   position:fixed, and a transformed ancestor would misplace it. */
+.cal-card {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+    min-height: 44px;
+    padding: 0 16px;
+    background-color: var(--white);
+    border: 1px solid transparent;
+    border-radius: 16px;
+    cursor: pointer;
+}
+
+.cal-card:hover,
+.cal-card.is-selected {
+    border-color: var(--brand-color);
+}
+
+/* status icon (or fallback dot) in the status color */
+.cal-card .status-icon,
+.cal-card .dot {
+    flex: 0 0 auto;
+    color: var(--status-color);
+}
+
+.cal-card .status-icon {
+    font-size: 20px;
+}
+
+.cal-card .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: currentColor;
+}
+
+.cal-title {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 14px;
+    font-weight: 700;
+    font-style: italic;
+    color: var(--black);
+}
+
+.cal-pu {
+    flex: 0 0 auto;
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+    color: var(--negative);
+}

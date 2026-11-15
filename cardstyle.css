@@ -32,7 +32,11 @@
     position: relative;
     width: 400px;
     background-color: var(--white);
-    border-radius: 18px;
+    /* border-radius: 18px; */
+
+    corner-shape: squircle;
+    border-radius: 8%;
+
     padding: 24px 22px 22px;
     /* box-shadow: 0 20px 60px rgba(20, 20, 43, 0.2); */
     display: flex;
@@ -326,6 +330,7 @@
     overflow: hidden;
     background-color: #ffffff;
     border-radius: 0 18px 18px 0;
+
     box-shadow: 0 20px 60px rgba(20, 20, 43, 0.2);
     transition: width 0.28s ease;
 }
@@ -515,9 +520,11 @@
     align-items: center;
     justify-content: center;
 }
+
 .copy-btn[hidden] {
     display: none;
 }
+
 .copy-btn:hover {
     color: var(--black);
 }

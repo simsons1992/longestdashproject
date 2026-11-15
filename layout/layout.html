@@ -5,29 +5,247 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Layout design</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <!-- same files, same order as index.html -->
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../cardstyle.css">
+    <link rel="stylesheet" href="../widgets.css">
+    <link rel="stylesheet" href="../notify.css">
+    <link rel="stylesheet" href="../mention.css">
+    <link rel="stylesheet" href="../note-links.css">
+    <link rel="stylesheet" href="../toast.css">
     <link rel="stylesheet" href="layout.css">
+    <link rel="stylesheet" href="calendar.css">
 </head>
 
 <body>
+
+    <!-- WIDGETS (same markup as widgets.html) -->
     <div class="widgets">
-        <div class="widget-1"></div>
-        <div class="widget-2"></div>
-        <div class="widget-3"></div>
+        <div class="widgets-grid">
+            <div class="widget email-widget">
+                <div class="widget-header">
+                    <h2>Mail</h2>
+                </div>
+                <p class="widget-hint">
+                    Opens a new email in your default mail app, with a subject and body
+                    already filled in.
+                </p>
+                <button type="button" class="widget-btn" id="compose-email-btn">
+                    <span class="material-symbols-rounded">
+                        label_important
+                    </span>
+                </button>
+            </div>
+
+            <div class="widget tire-widget">
+                <div class="widget-header">
+                    <h2>Tires</h2>
+                </div>
+                <div class="tire-inputs">
+                    <input type="number" id="tire-front" placeholder="Front size" />
+                    <input type="number" id="tire-rear" placeholder="Rear size" />
+                </div>
+                <div class="tire-totals">
+                    <h4><span>Total</span><span id="tire-total">&mdash;</span></h4>
+                    <h4>
+                        <span>Total dep</span><span id="tire-total-dep">&mdash;</span>
+                    </h4>
+                </div>
+                <button type="button" class="widget-btn" id="tire-copy-btn">
+                    Copy
+                </button>
+            </div>
+
+            <div class="widget template-widget">
+                <div class="widget-header">
+                    <h2>Templates</h2>
+                </div>
+                <input type="text" id="template-search" placeholder="Search template..." />
+                <div class="template-results" id="template-results"></div>
+            </div>
+
+            <div class="widget revenue-widget">
+                <span class="material-symbols-rounded revenue-icon">finance_mode</span>
+                <p class="revenue-label">Done in Sales</p>
+                <h2 class="this-month-revenue">...</h2>
+                <div class="last-month-revenue is-up">
+                    <span class="material-symbols-rounded">arrow_drop_up</span>
+                    <span class="last-month-text">+0.00€ vs last month</span>
+                </div>
+                <div class="revenue-stock">
+                    <p class="revenue-label small">Stock Volume</p>
+                    <p class="stock-volume">0.00€</p>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <!-- SEARCH BAR (same as .topbar in index.html) -->
+    <header class="search-bar">
+        <div class="topbar-left">
+            <input type="search" id="order-search" placeholder="Search title, phone or email">
+        </div>
+        <div class="topbar-right">
+            <button type="button" id="new-order-btn" class="new-order-btn">
+                + New order <span class="kbd">Ctrl 1</span>
+            </button>
+        </div>
+    </header>
+
     <div class="layout-box">
 
+        <!-- ON ORDER · Mon–Fri · filled by calendar.js -->
         <div class="calendar-box">
-            <div class="monday"></div>
-            <div class="tuesday"></div>
-            <div class="wednesday"></div>
-            <div class="thursday"></div>
-            <div class="friday"></div>
+            <div class="cal-nav">
+                <div class="seg-toggle" role="group" aria-label="Week">
+                    <span class="seg-toggle-thumb"></span>
+                    <button type="button" class="seg-toggle-btn" data-nav="prev">
+                        <span class="material-symbols-rounded">chevron_left</span><span class="cal-nav-count">0</span>
+                    </button>
+                    <button type="button" class="seg-toggle-btn is-active" data-nav="today">This week</button>
+                    <button type="button" class="seg-toggle-btn" data-nav="next">
+                        <span class="cal-nav-count">0</span><span class="material-symbols-rounded">chevron_right</span>
+                    </button>
+                </div>
+                <span class="cal-nav-range"></span>
+            </div>
+            <section class="cal-day monday">
+                <header class="cal-day-head"><span class="cal-day-num"></span><span class="cal-day-sep"></span><span
+                        class="cal-day-name">MON</span></header>
+                <div class="cal-list"></div>
+            </section>
+            <section class="cal-day tuesday">
+                <header class="cal-day-head"><span class="cal-day-num"></span><span class="cal-day-sep"></span><span
+                        class="cal-day-name">TUE</span></header>
+                <div class="cal-list"></div>
+            </section>
+            <section class="cal-day wednesday">
+                <header class="cal-day-head"><span class="cal-day-num"></span><span class="cal-day-sep"></span><span
+                        class="cal-day-name">WED</span></header>
+                <div class="cal-list"></div>
+            </section>
+            <section class="cal-day thursday">
+                <header class="cal-day-head"><span class="cal-day-num"></span><span class="cal-day-sep"></span><span
+                        class="cal-day-name">THU</span></header>
+                <div class="cal-list"></div>
+            </section>
+            <section class="cal-day friday">
+                <header class="cal-day-head"><span class="cal-day-num"></span><span class="cal-day-sep"></span><span
+                        class="cal-day-name">FRI</span></header>
+                <div class="cal-list"></div>
+            </section>
         </div>
-        <div class="order-box"></div>
-        <div class="reminder-box"></div>
+
+        <!-- BILLED / STOCK · filled by orderbox.js -->
+        <div class="order-box">
+            <div class="seg-toggle" role="group" aria-label="Order status">
+                <span class="seg-toggle-thumb"></span>
+                <button type="button" class="seg-toggle-btn is-active" data-status="billed">Billed</button>
+                <button type="button" class="seg-toggle-btn" data-status="stock">Stock</button>
+            </div>
+            <div class="order-list"></div>
+            <p class="orders-empty" hidden>No orders.</p>
+        </div>
+
+        <!-- REMINDERS · filled by reminders.js -->
+        <div class="reminder-box">
+            <button type="button" id="bellBtn" class="bell-btn" aria-label="Create reminder">
+                <span class="material-symbols-rounded">notification_add</span>
+            </button>
+            <div id="reminderList" class="expanded-list"></div>
+        </div>
 
     </div>
 
+    <!-- New reminder overlay -->
+    <div id="reminderOverlay" class="overlay hidden">
+        <div class="reminder-form-card">
+            <button type="button" class="card-close" id="closeReminderForm" aria-label="Close">&times;</button>
+
+            <div class="reminder-form-header">
+                <span class="material-symbols-rounded reminder-form-icon">notification_add</span>
+                <span class="reminder-form-title">New reminder</span>
+            </div>
+
+            <textarea id="reminderTextInput" class="reminder-text-input" placeholder="Reminder text"
+                rows="2"></textarea>
+
+            <div class="reminder-form-row">
+                <input type="text" id="reminderDateInput" class="reminder-date-input" placeholder="dd.mm"
+                    inputmode="numeric" maxlength="5">
+                <input type="text" id="reminderTimeInput" class="reminder-time-input" placeholder="HH:MM"
+                    inputmode="numeric" maxlength="5">
+            </div>
+
+            <button type="button" id="createReminderBtn" class="reminder-create-btn">create</button>
+        </div>
+    </div>
+
+    <!-- OVERLAY ORDER CARD (toggled by ui-card.js) -->
+    <div id="overlay" class="overlay hidden">
+        <div class="ordercard-shell" id="card-shell">
+            <div class="ordercard">
+                <button type="button" class="card-close" id="card-close" aria-label="Close">&times;</button>
+
+                <input type="text" class="title" id="card-title" placeholder="TITLE">
+                <div class="card-status-row">
+                    <button type="button" class="status-pill" id="card-status"></button>
+                    <div class="status-row-right">
+                        <button type="button" class="copy-btn" id="card-copy">
+                            <span class="material-symbols-rounded copy-btn-icon" id="card-copy-icon">content_copy</span>
+                        </button>
+                        <span class="material-symbols-rounded note-counter" id="note-counter" hidden></span>
+                    </div>
+                </div>
+
+                <div class="note-wrap">
+                    <input type="text" class="note" id="card-note" placeholder="note...">
+                </div>
+                <input type="text" class="phone" id="card-phone" placeholder="phone...">
+                <input type="email" class="email" id="card-email" placeholder="email...">
+                <input type="text" class="Delivery" id="card-delivery" placeholder="dd.mm" inputmode="numeric"
+                    maxlength="5">
+
+                <div class="divider"></div>
+
+                <div class="bottom-row">
+                    <input type="number" class="PR" id="card-pr" placeholder="pr...">
+                    <input type="number" class="PU" id="card-pu" placeholder="pu..." disabled>
+                </div>
+
+                <div class="revenue-wrap">
+                    <span class="currency">&euro;</span>
+                    <input type="number" class="revenue" id="card-revenue" placeholder="0">
+                </div>
+
+                <div class="card-actions">
+                    <button type="button" class="delete-btn" id="card-delete">Delete order</button>
+                    <button type="button" class="save-btn" id="card-save">Save</button>
+                </div>
+            </div>
+
+            <div class="ordercard-note" id="ordercard-note">
+                <div class="ordercard-note-inner">
+                    <label class="ordercard-note-label">Notes</label>
+
+                    <textarea class="new-note-textarea" id="card-note-new"
+                        placeholder="Type a note, Enter to save... (Alt+N)" rows="3"></textarea>
+
+                    <div class="note-list" id="note-list"></div>
+                    <p class="note-list-empty" id="note-list-empty">No notes yet.</p>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <script type="module" src="../widgets.js"></script>
+    <script type="module" src="layout.js"></script>
 </body>
 
 </html>

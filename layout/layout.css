@@ -1,53 +1,232 @@
+body {
+    margin-left: 12px;
+    margin-top: 12px;
+
+
+}
+
+/* Derived from the root tokens in style.css — no new colors. */
+:root {
+    --box-bg: color-mix(in srgb, var(--black) 6%, var(--main-background));
+    --main-background: #f7f7f8;
+    --white: #FAFAFA;
+    --black: #222222;
+    --negative: #22222240;
+    --brand-color: greenyellow;
+    --muted: #222222a0;
+    --selected: #2222220d;
+    --red: #d92121;
+}
+
 .widgets {
-    background-color: pink;
     width: 99vw;
-    height: 220px;
-    margin-bottom: 12px;
-    border-radius: 40px;
+    margin: 0 auto 12px;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    width: 99vw;
+    margin: 0 auto 12px;
 }
 
 .layout-box {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    /* calendar · orders · reminders ≈ 30% · 45% · 25% */
+    grid-template-columns: minmax(0, 3fr) minmax(0, 4.5fr) minmax(0, 2.5fr);
+    grid-template-rows: minmax(0, 1fr);
     grid-template-areas: "calendar order reminder";
     gap: 16px;
     background-color: transparent;
     width: 99vw;
     height: 90vh;
+    margin: 0 auto;
     border-radius: 40px;
 }
 
-.calendar-box,
+/* calendar-box styles live in calendar.css */
 .order-box,
 .reminder-box {
     min-width: 0;
-    background-color: paleturquoise;
-    border-radius: 40px;
+    min-height: 0;
+    /*     background-color: var(--box-bg); */
+    border: solid 0.5px var(--brand-color);
+    border-radius: 22px;
+
 }
 
-.calendar-box {
-    grid-area: calendar;
+/* ---------- order-box ---------- */
+.order-box {
+    grid-area: order;
     display: flex;
     flex-direction: column;
     gap: 12px;
-    padding: 12px;
+    padding: 20px 16px 12px;
 }
 
-.order-box {
-    grid-area: order;
+/* Segmented toggle (Billed/Stock, calendar weeks): one pill, a black thumb
+   slides between the labels. --seg-count = segments, --seg-index = active. */
+.seg-toggle {
+    --seg-count: 2;
+    --seg-index: 0;
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(var(--seg-count), 1fr);
+    padding: 4px;
+    background-color: var(--white);
+    /*     border: 1px solid var(--negative); */
+    border-radius: 10px;
 }
 
+.seg-toggle-thumb {
+    position: absolute;
+    top: 4px;
+    bottom: 4px;
+    left: 4px;
+    width: calc((100% - 8px) / var(--seg-count));
+    background-color: var(--black);
+    border-radius: 10px;
+    transform: translateX(calc(var(--seg-index) * 100%));
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.seg-toggle-btn {
+    position: relative;
+    /* above the thumb */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    padding: 7px 0;
+    border: 0;
+    background: transparent;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    color: var(--muted);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.seg-toggle-btn:focus-visible {
+    outline: 2px solid var(--brand-color);
+    outline-offset: -2px;
+}
+
+.seg-toggle-btn.is-active {
+    color: var(--white);
+}
+
+.seg-toggle-btn:disabled:not(.is-active) {
+    opacity: 0.4;
+    cursor: default;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .seg-toggle-thumb,
+    .seg-toggle-btn {
+        transition: none;
+    }
+}
+
+.order-box .seg-toggle {
+    --seg-count: 2;
+    flex: 0 0 auto;
+    align-self: flex-start;
+    width: 220px;
+    margin: 0 8px;
+}
+
+/* room around the rows for the selected lift and the delete badge */
+.order-list {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 6px 12px 6px 8px;
+}
+
+/* Row cells: the title takes all spare width, the number columns are
+   fixed so they line up row to row — no dead space between cells. */
+.order-list .orderbox {
+    min-height: 48px;
+    gap: 4px;
+}
+
+.order-list .orderbox>.title {
+    flex: 1 1 0;
+}
+
+.order-list .orderbox>.PU,
+.order-list .orderbox>.revenue,
+.order-list .orderbox>.Delivery {
+    flex: 0 0 auto;
+    padding: 0 8px;
+}
+
+.order-list .orderbox>.PU {
+    width: 64px;
+}
+
+.order-list .orderbox>.revenue {
+    width: 88px;
+}
+
+.order-list .orderbox>.Delivery {
+    width: 76px;
+}
+
+/* status: colored icon only */
+.order-list .status-pill {
+    flex: 0 0 auto;
+    align-self: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    margin: 0 0 0 4px;
+    padding: 0;
+    background-color: transparent;
+}
+
+.order-list .status-pill:hover {
+    background-color: var(--pill-bg);
+}
+
+.order-list .status-pill .dot {
+    width: 9px;
+    height: 9px;
+}
+
+.order-list .status-pill .status-icon {
+    font-size: 24px;
+
+}
+
+
+
+.order-box .orders-empty {
+    margin: 24px auto;
+}
+
+/* ---------- reminder-box ---------- */
 .reminder-box {
     grid-area: reminder;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    padding: 16px 16px 16px;
 }
 
-.monday,
-.tuesday,
-.wednesday,
-.thursday,
-.friday {
-    background-color: white;
-    flex: 1 1 0;
-    min-height: 0;
-    border-radius: 32px;
+.reminder-box .bell-btn {
+    flex: 0 0 auto;
+    margin-bottom: 0;
+}
+
+.reminder-box .expanded-list {
+    width: 100%;
 }
