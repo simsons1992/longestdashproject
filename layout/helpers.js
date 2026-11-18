@@ -11,20 +11,23 @@ export function el(tag, className) {
   return node;
 }
 
-// Material Symbols icon per status id (layout view only). A status that is
-// not listed here (e.g. "done") falls back to the plain colored dot.
+// Material Symbols icon + icon color per status id (layout view only). A
+// status that is not listed here (e.g. "done") falls back to the plain
+// colored dot.
 const STATUS_ICONS = {
-  billed: "receipt",
-  stock: "trolley",
-  "on-order": "delivery_truck_speed",
+  billed: { name: "receipt", color: "#222222" },
+  stock: { name: "trolley", color: "#22222240" },
+  "on-order": { name: "delivery_truck_speed", color: "#fa8128" },
 };
 
-// Icon (or dot) in the status color — the parent sets `color`.
+// Icon (or dot) in the status color — the parent sets `color`, unless the
+// status has its own icon color above.
 export function buildStatusIcon(statusId) {
-  const name = STATUS_ICONS[statusId];
-  if (!name) return el("span", "dot");
+  const cfg = STATUS_ICONS[statusId];
+  if (!cfg) return el("span", "dot");
   const icon = el("span", "material-symbols-rounded status-icon");
-  icon.textContent = name;
+  icon.textContent = cfg.name;
+  icon.style.color = cfg.color;
   return icon;
 }
 

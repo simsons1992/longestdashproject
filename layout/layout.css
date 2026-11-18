@@ -12,7 +12,8 @@ body {
     --white: #FAFAFA;
     --black: #222222;
     --negative: #22222240;
-    --brand-color: greenyellow;
+    /*     --brand-color: greenyellow; */
+    --brand-color: #800020;
     --muted: #222222a0;
     --selected: #2222220d;
     --red: #d92121;

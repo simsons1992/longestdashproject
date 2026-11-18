@@ -78,6 +78,7 @@ export function createOrderBox(root, { onOpen, onTabChange, onChanged }) {
     row.append(
       buildStatusPill(order),
       buildCell("title", fields.title, term, order.note),
+      buildCell ("note", fields.note, term),
       buildCell("PU", fields.pu, term),
       buildCell("revenue", fields.revenue, term),
       buildCell("Delivery", fields.delivery, term),

@@ -5,7 +5,11 @@
 //   Ctrl+1  new order          1  order-box · Billed
 //   Ctrl+P  search             2  order-box · Stock
 //   Alt+N   new reminder       3  calendar-box (on order)
-//   Arrows  move selection     Enter  open the selected order
+//   Up / Down      move selection inside the active box
+//   Left / Right   switch active box: ← calendar-box · → order-box
+//                  (works from the search box too)
+//   Shift+← / →    calendar only: jump to previous / next day
+//   Enter          open the selected order
 //   [  ]    calendar: earlier / later week     0  calendar: this week
 
 import { loadOrders } from "../storage.js";
@@ -106,6 +110,15 @@ function setTab(status) {
 function setZone(zoneName) {
   zone = zoneName;
   applySelection();
+}
+
+// Left / Right arrows: move the active box. Does nothing when the target
+// box has nothing to select (e.g. no on-order cards in the shown week or
+// search matches), so the selection never disappears.
+function switchZone(zoneName) {
+  if (zoneName === zone) return;
+  if (items(zoneName).length === 0) return;
+  setZone(zoneName);
 }
 
 // ---------- selection movement ----------
@@ -214,12 +227,20 @@ document.addEventListener("keydown", (event) => {
   } else if (event.key === "ArrowUp") {
     event.preventDefault();
     moveSelection(-1);
-  } else if (!inSearch && zone === "calendar" && event.key === "ArrowLeft") {
-    event.preventDefault();
-    moveDay(-1);
-  } else if (!inSearch && zone === "calendar" && event.key === "ArrowRight") {
-    event.preventDefault();
-    moveDay(1);
+  } else if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+    const left = event.key === "ArrowLeft";
+    if (event.shiftKey) {
+      // Shift+← / → : day jump in the calendar (Shift+arrows keep selecting
+      // text while typing in search).
+      if (inSearch || zone !== "calendar") return;
+      event.preventDefault();
+      moveDay(left ? -1 : 1);
+    } else {
+      // ← calendar-box · → order-box (also from search; there the arrows no
+      // longer move the text caret — Home / End / mouse still do).
+      event.preventDefault();
+      switchZone(left ? "calendar" : "orders");
+    }
   } else if (event.key === "Enter") {
     event.preventDefault();
     openSelected();
